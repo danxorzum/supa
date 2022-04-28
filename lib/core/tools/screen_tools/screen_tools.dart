@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:supa/tools/extensions/export.dart';
+import '../extensions/export.dart';
 
 /// Diferent sizes for the app
 enum ScreenSize {

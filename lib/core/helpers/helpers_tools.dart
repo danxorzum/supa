@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:supa/tools/screen_tools/screen_tools.dart';
+
+import '../tools/screen_tools/screen_tools.dart';
 
 part 'insets.dart';
 part 'corners.dart';
