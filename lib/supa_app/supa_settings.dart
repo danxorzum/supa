@@ -22,9 +22,9 @@ class SupaSettings {
   ///Fast setup for SupaSettings.
   ///Configure only what you need.
   factory SupaSettings.fast(
-      {double scaleExtraSmall = 0.9,
-      double scaleMedium = 1.1,
-      double scaleLarge = 1.15,
+      {double scaleExtraSmall = 0.95,
+      double scaleMedium = 1.05,
+      double scaleLarge = 1.1,
       double scaleExtraLarge = 1.2}) {
     return SupaSettings._(
       textSizes: SupaTextSize(),
