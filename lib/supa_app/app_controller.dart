@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
-import 'package:supa/supa.dart';
+import 'package:supa/core/core.dart';
+import 'supa_text_settings.dart';
+import 'extensions.dart';
 
 class AppController with ChangeNotifier {
   AppController({
     ThemeMode? themeMode,
     ThemeData? theme,
     ThemeData? darkTheme,
+    SupaTextSettings? settings,
   }) {
     _ligth = theme ?? ThemeData();
     _dark = darkTheme;
@@ -16,32 +19,48 @@ class AppController with ChangeNotifier {
             WidgetsFlutterBinding.ensureInitialized().window.devicePixelRatio);
     _textScale =
         WidgetsFlutterBinding.ensureInitialized().window.textScaleFactor;
+    _settings =
+        settings ?? SupaTextSettings(textThemeScales: TextThemeScales());
+    _baseTextTheme = _ligth.textTheme;
+    _baseDarkTextTheme = _dark?.textTheme;
+    _currentTextTheme = _baseTextTheme;
+    _currentDarkTextTheme = _baseDarkTextTheme;
   }
+
+  late final SupaTextSettings _settings;
+  late final TextTheme _baseTextTheme;
+  late final TextTheme? _baseDarkTextTheme;
+  late TextTheme _currentTextTheme;
+  late TextTheme? _currentDarkTextTheme;
 
   late ThemeMode _themeMode;
   late ThemeData _ligth;
   late ThemeData? _dark;
   late ScreenSize _ss;
   late double _textScale;
-  AppLifecycleState _state = AppLifecycleState.resumed;
-  AppLifecycleState _lastsState = AppLifecycleState.inactive;
+  final ValueNotifier<AppLifecycleState> _state =
+      ValueNotifier<AppLifecycleState>(AppLifecycleState.resumed);
+  final ValueNotifier<AppLifecycleState> _lastsState =
+      ValueNotifier<AppLifecycleState>(AppLifecycleState.inactive);
 
   //getters
   ScreenSize get ss => _ss;
   ThemeData get themeData => _ligth;
   ThemeData? get darkThemeData => _dark;
   ThemeMode get themeMode => _themeMode;
-  AppLifecycleState get state => _state;
-  AppLifecycleState get lastState => _lastsState;
+  AppLifecycleState get state => _state.value;
+  AppLifecycleState get lastState => _lastsState.value;
+  ValueNotifier<AppLifecycleState> get stateNotifier => _state;
+  ValueNotifier<AppLifecycleState> get lastStateNotifier => _lastsState;
 
-  onTextScaleChanged(SupaSettings settings) {
+  onTextScaleChanged() {
     _textScale = WidgetsBinding.instance!.window.textScaleFactor;
-    _recalculateFont(settings.reSize(_ss, _textScale));
+    _recalculateTheme();
     notifyListeners();
   }
 
   ///Do not call it out runApp.
-  void verifySizes(SupaSettings settings) {
+  void verifySizes() {
     final width = WidgetsBinding.instance?.window.physicalSize.width;
     final pRatio = WidgetsBinding.instance?.window.devicePixelRatio;
     assert(width != null && pRatio != null,
@@ -50,13 +69,9 @@ class AppController with ChangeNotifier {
 
     if (_ss != newSs) {
       _ss = newSs;
-      _recalculateFont(settings.reSize(_ss, _textScale));
+      _recalculateTheme();
       notifyListeners();
     }
-  }
-
-  setFont(SupaSettings settings) {
-    _recalculateFont(settings.reSize(_ss, _textScale));
   }
 
   ///Do not call it never if you are using [SupaApp].
@@ -64,55 +79,172 @@ class AppController with ChangeNotifier {
   ///if you aren't using [SupaApp] you can call it manually.
   ///you can decide if notifyListeners() or not whit [canNotifyListeners].
   void updateLifecycleState(AppLifecycleState state, bool canNotifyListeners) {
-    _lastsState = _state;
-    _state = state;
+    _lastsState.value = _state.value;
+    _state.value = state;
     if (canNotifyListeners) notifyListeners();
   }
 
-  void _recalculateFont(SupaTextSize size) {
-    _ligth = _ligth.copyWith(
-        textTheme: _ligth.textTheme.copyWith(
-      overline: _ligth.textTheme.overline?.copyWith(fontSize: size.overline),
-      caption: _ligth.textTheme.caption?.copyWith(fontSize: size.caption),
-      button: _ligth.textTheme.button?.copyWith(fontSize: size.button),
-      bodyText2: _ligth.textTheme.bodyText2?.copyWith(fontSize: size.bodyText2),
-      bodyText1: _ligth.textTheme.bodyText1?.copyWith(fontSize: size.bodyText1),
-      subtitle2: _ligth.textTheme.subtitle2?.copyWith(fontSize: size.subtitle2),
-      subtitle1: _ligth.textTheme.subtitle1?.copyWith(fontSize: size.subtitle1),
-      headline6: _ligth.textTheme.headline6?.copyWith(fontSize: size.headline6),
-      headline5: _ligth.textTheme.headline5?.copyWith(fontSize: size.headline5),
-      headline4: _ligth.textTheme.headline4?.copyWith(fontSize: size.headline4),
-      headline3: _ligth.textTheme.headline3?.copyWith(fontSize: size.headline3),
-      headline2: _ligth.textTheme.headline2?.copyWith(fontSize: size.headline2),
-      headline1: _ligth.textTheme.headline1?.copyWith(fontSize: size.headline1),
-    ));
-    if (_dark != null) {
-      _dark = _dark!.copyWith(
-          textTheme: _dark!.textTheme.copyWith(
-        overline: _dark!.textTheme.overline?.copyWith(fontSize: size.overline),
-        caption: _dark!.textTheme.caption?.copyWith(fontSize: size.caption),
-        button: _dark!.textTheme.button?.copyWith(fontSize: size.button),
-        bodyText2:
-            _dark!.textTheme.bodyText2?.copyWith(fontSize: size.bodyText2),
-        bodyText1:
-            _dark!.textTheme.bodyText1?.copyWith(fontSize: size.bodyText1),
-        subtitle2:
-            _dark!.textTheme.subtitle2?.copyWith(fontSize: size.subtitle2),
-        subtitle1:
-            _dark!.textTheme.subtitle1?.copyWith(fontSize: size.subtitle1),
-        headline6:
-            _dark!.textTheme.headline6?.copyWith(fontSize: size.headline6),
-        headline5:
-            _dark!.textTheme.headline5?.copyWith(fontSize: size.headline5),
-        headline4:
-            _dark!.textTheme.headline4?.copyWith(fontSize: size.headline4),
-        headline3:
-            _dark!.textTheme.headline3?.copyWith(fontSize: size.headline3),
-        headline2:
-            _dark!.textTheme.headline2?.copyWith(fontSize: size.headline2),
-        headline1:
-            _dark!.textTheme.headline1?.copyWith(fontSize: size.headline1),
-      ));
+  void _recalculateTheme() {
+    _recalculateTextTheme();
+    _ligth = _ligth.copyWith(textTheme: _currentTextTheme);
+    _dark = _dark?.copyWith(textTheme: _currentDarkTextTheme);
+  }
+
+  void _recalculateTextTheme() {
+    if (_baseTextTheme.bodyText2 != null) {
+      switch (_ss) {
+        case ScreenSize.xs:
+          _currentTextTheme = _baseTextTheme.scale(
+              _settings.textThemeScales.xsScale,
+              deviceTextScaleFactor: _textScale);
+          _currentDarkTextTheme = _baseDarkTextTheme?.scale(
+              _settings.textThemeScales.xsScale,
+              deviceTextScaleFactor: _textScale);
+          break;
+        case ScreenSize.s:
+          _currentTextTheme =
+              _baseTextTheme.scale(1, deviceTextScaleFactor: _textScale);
+          _currentDarkTextTheme =
+              _baseDarkTextTheme?.scale(1, deviceTextScaleFactor: _textScale);
+          break;
+        case ScreenSize.m:
+          _currentTextTheme = _baseTextTheme.scale(
+              _settings.textThemeScales.mScale,
+              deviceTextScaleFactor: _textScale);
+          _currentDarkTextTheme = _baseDarkTextTheme?.scale(
+              _settings.textThemeScales.mScale,
+              deviceTextScaleFactor: _textScale);
+          break;
+        case ScreenSize.l:
+          _currentTextTheme = _baseTextTheme.scale(
+              _settings.textThemeScales.lScale,
+              deviceTextScaleFactor: _textScale);
+          _currentDarkTextTheme = _baseDarkTextTheme?.scale(
+              _settings.textThemeScales.lScale,
+              deviceTextScaleFactor: _textScale);
+          break;
+        case ScreenSize.xl:
+          _currentTextTheme = _baseTextTheme.scale(
+              _settings.textThemeScales.xlScale,
+              deviceTextScaleFactor: _textScale);
+          _currentDarkTextTheme = _baseDarkTextTheme?.scale(
+              _settings.textThemeScales.xlScale,
+              deviceTextScaleFactor: _textScale);
+          break;
+      }
+    } else {
+      _currentTextTheme =
+          _baseTextTheme.scale(1, deviceTextScaleFactor: _textScale);
+      _currentDarkTextTheme =
+          _baseDarkTextTheme?.scale(1, deviceTextScaleFactor: _textScale);
+      switch (_ss) {
+        case ScreenSize.xs:
+          _currentTextTheme = _baseTextTheme.copyWith(
+            displaySmall: _baseTextTheme.displaySmall
+                ?.scale(_settings.textThemeScales.xsScale),
+            headlineLarge: _baseTextTheme.headlineLarge
+                ?.scale(_settings.textThemeScales.xsBigScale),
+            headlineMedium: _baseTextTheme.headlineMedium
+                ?.scale(_settings.textThemeScales.xsBigScale),
+            headlineSmall: _baseTextTheme.headlineSmall
+                ?.scale(_settings.textThemeScales.xsBigScale),
+            bodyLarge: _baseTextTheme.bodyLarge
+                ?.scale(_settings.textThemeScales.xsScale),
+            bodyMedium: _baseTextTheme.bodyMedium
+                ?.scale(_settings.textThemeScales.xsScale),
+            bodySmall: _baseTextTheme.bodySmall
+                ?.scale(_settings.textThemeScales.xsScale),
+          );
+
+          _currentDarkTextTheme = _baseDarkTextTheme?.copyWith(
+            displaySmall: _baseDarkTextTheme?.displaySmall
+                ?.scale(_settings.textThemeScales.xsScale),
+            headlineLarge: _baseDarkTextTheme?.headlineLarge
+                ?.scale(_settings.textThemeScales.xsBigScale),
+            headlineMedium: _baseDarkTextTheme?.headlineMedium
+                ?.scale(_settings.textThemeScales.xsBigScale),
+            headlineSmall: _baseDarkTextTheme?.headlineSmall
+                ?.scale(_settings.textThemeScales.xsBigScale),
+            bodyLarge: _baseDarkTextTheme?.bodyLarge
+                ?.scale(_settings.textThemeScales.xsScale),
+            bodyMedium: _baseDarkTextTheme?.bodyMedium
+                ?.scale(_settings.textThemeScales.xsScale),
+            bodySmall: _baseDarkTextTheme?.bodySmall
+                ?.scale(_settings.textThemeScales.xsScale),
+          );
+          break;
+        case ScreenSize.s:
+          _currentTextTheme = _baseTextTheme;
+          _currentDarkTextTheme = _baseDarkTextTheme;
+          break;
+        case ScreenSize.m:
+          _currentTextTheme = _baseTextTheme.copyWith(
+              displaySmall: _baseTextTheme.displaySmall
+                  ?.scale(_settings.textThemeScales.mScale),
+              headlineLarge: _baseTextTheme.headlineLarge
+                  ?.scale(_settings.textThemeScales.mScale),
+              headlineMedium: _baseTextTheme.headlineMedium
+                  ?.scale(_settings.textThemeScales.mScale));
+
+          _currentDarkTextTheme = _baseDarkTextTheme?.copyWith(
+              displaySmall: _baseDarkTextTheme?.displaySmall
+                  ?.scale(_settings.textThemeScales.mScale),
+              headlineLarge: _baseDarkTextTheme?.headlineLarge
+                  ?.scale(_settings.textThemeScales.mScale),
+              headlineMedium: _baseDarkTextTheme?.headlineMedium
+                  ?.scale(_settings.textThemeScales.mScale));
+          break;
+        case ScreenSize.l:
+          _currentTextTheme = _baseTextTheme.copyWith(
+              displaySmall: _baseTextTheme.displaySmall
+                  ?.scale(_settings.textThemeScales.lScale),
+              headlineLarge: _baseTextTheme.headlineLarge
+                  ?.scale(_settings.textThemeScales.lScale),
+              headlineMedium: _baseTextTheme.headlineMedium
+                  ?.scale(_settings.textThemeScales.lScale));
+
+          _currentDarkTextTheme = _baseDarkTextTheme?.copyWith(
+              displaySmall: _baseDarkTextTheme?.displaySmall
+                  ?.scale(_settings.textThemeScales.lScale),
+              headlineLarge: _baseDarkTextTheme?.headlineLarge
+                  ?.scale(_settings.textThemeScales.lScale),
+              headlineMedium: _baseDarkTextTheme?.headlineMedium
+                  ?.scale(_settings.textThemeScales.lScale));
+          break;
+        case ScreenSize.xl:
+          _currentTextTheme = _baseTextTheme.copyWith(
+              displaySmall: _baseTextTheme.displaySmall
+                  ?.scale(_settings.textThemeScales.xlScale),
+              headlineLarge: _baseTextTheme.headlineLarge
+                  ?.scale(_settings.textThemeScales.xlScale),
+              headlineMedium: _baseTextTheme.headlineMedium
+                  ?.scale(_settings.textThemeScales.xlScale),
+              headlineSmall: _baseTextTheme.headlineSmall
+                  ?.scale(_settings.textThemeScales.xlScale),
+              bodyLarge: _baseTextTheme.bodyLarge
+                  ?.scale(_settings.textThemeScales.xlScale),
+              bodyMedium: _baseTextTheme.bodyMedium
+                  ?.scale(_settings.textThemeScales.xlScale),
+              bodySmall: _baseTextTheme.bodySmall
+                  ?.scale(_settings.textThemeScales.xlScale));
+
+          _currentDarkTextTheme = _baseDarkTextTheme?.copyWith(
+              displaySmall: _baseDarkTextTheme?.displaySmall
+                  ?.scale(_settings.textThemeScales.xlScale),
+              headlineLarge: _baseDarkTextTheme?.headlineLarge
+                  ?.scale(_settings.textThemeScales.xlScale),
+              headlineMedium: _baseDarkTextTheme?.headlineMedium
+                  ?.scale(_settings.textThemeScales.xlScale),
+              headlineSmall: _baseDarkTextTheme?.headlineSmall
+                  ?.scale(_settings.textThemeScales.xlScale),
+              bodyLarge: _baseDarkTextTheme?.bodyLarge
+                  ?.scale(_settings.textThemeScales.xlScale),
+              bodyMedium: _baseDarkTextTheme?.bodyMedium
+                  ?.scale(_settings.textThemeScales.xlScale),
+              bodySmall: _baseDarkTextTheme?.bodySmall
+                  ?.scale(_settings.textThemeScales.xlScale));
+          break;
+      }
     }
   }
 }

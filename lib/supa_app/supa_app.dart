@@ -3,25 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:supa/core/core.dart';
 import 'supa_child.dart';
 import 'app_controller.dart';
-import 'supa_settings.dart';
 
 class SupaApp extends StatefulWidget {
   ///Do not use inside MaterialApp.
-  ///use Directly in [runApp] envolving you app.
-  SupaApp({
-    required this.child,
+  ///Use envolving [MaterialApp].
+  const SupaApp({
+    required this.builder,
     required this.controller,
     this.notifyIfLifeCycleChanged = true,
-    SupaSettings? supaSettings,
     Key? key,
-  }) : super(key: key) {
-    ss = supaSettings ?? SupaSettings.fast();
-  }
-
-  final Widget child;
+  }) : super(key: key);
+  final Widget Function(BuildContext context) builder;
   final AppController controller;
   final bool notifyIfLifeCycleChanged;
-  late final SupaSettings ss;
 
   @override
   State<SupaApp> createState() => _SupaAppState();
@@ -35,7 +29,7 @@ class _SupaAppState extends State<SupaApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addObserver(this);
-    widget.controller.setFont(widget.ss);
+    // widget.controller.recalculateFont();
     widget.controller.addListener(() => setState(() {}));
   }
 
@@ -48,7 +42,7 @@ class _SupaAppState extends State<SupaApp> with WidgetsBindingObserver {
 
   @override
   void didChangeTextScaleFactor() {
-    widget.controller.onTextScaleChanged(widget.ss);
+    widget.controller.onTextScaleChanged();
     super.didChangeTextScaleFactor();
   }
 
@@ -70,19 +64,13 @@ class _SupaAppState extends State<SupaApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return SupaChild(
       controller: widget.controller,
-      child: widget.child,
-      // child: AnimatedBuilder(
-      //     animation: widget.controller,
-      //     builder: (context, __) {
-      //       print('redraw from library');
-      //       return widget.child;
-      //     }),
+      child: Builder(builder: widget.builder),
     );
   }
 
   _updateSize() {
     if (widget.controller.ss != ssFromWidth(_size.width * _ratio)) {
-      widget.controller.verifySizes(widget.ss);
+      widget.controller.verifySizes();
     }
   }
 }

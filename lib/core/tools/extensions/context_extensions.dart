@@ -11,6 +11,7 @@ extension SupaContext on BuildContext {
 
   TextTheme get sTextTheme => Theme.of(this).textTheme;
   ThemeData get sTheme => Theme.of(this);
+  ColorScheme get sColorScheme => sTheme.colorScheme;
 
 //Screen size bools
   bool get isXs => sWidth >= SupaOffsets.xs.dx && sWidth <= SupaOffsets.xs.dy;
@@ -34,6 +35,8 @@ extension SupaContext on BuildContext {
 
   //Sized box
   SizedBox get rowSpace => SizedBox(width: SupaInsets.getInsetValue(sWidth));
+  SizedBox get columnSpaceLarge =>
+      SizedBox(height: SupaInsets.getInsetValue(sWidth * 1.5));
   SizedBox get columnSpace =>
       SizedBox(height: SupaInsets.getInsetValue(sWidth));
   SizedBox get squareBox => SizedBox(
