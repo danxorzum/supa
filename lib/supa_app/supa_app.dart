@@ -64,7 +64,8 @@ class _SupaAppState extends State<SupaApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return SupaChild(
       controller: widget.controller,
-      child: Builder(builder: widget.builder),
+      child: AnimatedBuilder(
+          animation: widget.controller, builder: (_, __) => widget.builder(_)),
     );
   }
 
