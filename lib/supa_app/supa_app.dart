@@ -22,13 +22,13 @@ class SupaApp extends StatefulWidget {
 }
 
 class _SupaAppState extends State<SupaApp> with WidgetsBindingObserver {
-  Size _size = WidgetsBinding.instance!.window.physicalSize;
-  final _ratio = WidgetsBinding.instance!.window.devicePixelRatio;
+  Size _size = WidgetsBinding.instance.window.physicalSize;
+  final _ratio = WidgetsBinding.instance.window.devicePixelRatio;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     // widget.controller.recalculateFont();
     widget.controller.addListener(() => setState(() {}));
   }
@@ -36,7 +36,7 @@ class _SupaAppState extends State<SupaApp> with WidgetsBindingObserver {
   @override
   void didChangeMetrics() {
     super.didChangeMetrics();
-    _size = WidgetsBinding.instance!.window.physicalSize;
+    _size = WidgetsBinding.instance.window.physicalSize;
     _updateSize();
   }
 
@@ -55,7 +55,7 @@ class _SupaAppState extends State<SupaApp> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     widget.controller.removeListener(() => setState(() {}));
     super.dispose();
   }

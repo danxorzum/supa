@@ -42,4 +42,21 @@ extension SupaContext on BuildContext {
   SizedBox get squareBox => SizedBox(
       width: SupaInsets.getInsetValue(sWidth),
       height: SupaInsets.getInsetValue(sWidth));
+
+  //M3 text styles
+  TextStyle? get displayL => sTextTheme.displayLarge;
+  TextStyle? get display => sTextTheme.displayMedium;
+  TextStyle? get displayS => sTextTheme.displaySmall;
+  TextStyle? get headlineL => sTextTheme.headlineLarge;
+  TextStyle? get headline => sTextTheme.headlineMedium;
+  TextStyle? get headlineS => sTextTheme.headlineSmall;
+  TextStyle? get titleL => sTextTheme.titleLarge;
+  TextStyle? get title => sTextTheme.titleMedium;
+  TextStyle? get titleS => sTextTheme.titleSmall;
+  TextStyle? get bodyL => sTextTheme.bodyLarge;
+  TextStyle? get body => sTextTheme.bodyMedium;
+  TextStyle? get bodyS => sTextTheme.bodySmall;
+  TextStyle? get labelL => sTextTheme.labelLarge;
+  TextStyle? get label => sTextTheme.labelMedium;
+  TextStyle? get labelS => sTextTheme.labelSmall;
 }

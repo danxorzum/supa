@@ -4,28 +4,40 @@ import 'package:supa/core/core.dart';
 import 'supa_text_settings.dart';
 
 class AppController with ChangeNotifier {
+  ///Created a controller for the app.
+  ///The controller automatically manage rezing of the  font app.
+  ///The controller defaults only work with material 3.
+  ///If you don't sent [theme] or [darkTheme] automatically the controller will create it.
+  ///if you don't want a [darkTheme] just doesn't use it.
   AppController({
-    // this.useMaterial3 = false,
+    ///The theme of the app, use it to change the theme of the app.
+    ///Default is [ThemeMode.system].
     ThemeMode? themeMode,
+
+    ///The default [ThemeData] of the app.
+    ///By default it created a material 3 theme.
+    ///If [theme]s [TextTheme] is null, the controller will create it.
+    ///and also if [TextTheme]doesn't have any font size, the controller will create it based on [settings].
     ThemeData? theme,
     ThemeData? darkTheme,
+
+    ///Manage the text sizes and how scale the text.
     SupaTextSettings? settings,
   }) {
-    _ligth = theme ?? ThemeData.light();
-    _dark = darkTheme;
+    _settings = settings ??
+        SupaTextSettings(
+            textThemeScales: TextThemeScales(),
+            m3DefaultSizes: M3DefaultSizes());
+    _theme = theme ?? _defaultTheme();
+    _dark = darkTheme ?? _defaultTheme(isDark: true);
     _themeMode = themeMode ?? ThemeMode.system;
     _ss = ssFromWidth(
         WidgetsFlutterBinding.ensureInitialized().window.physicalSize.width /
             WidgetsFlutterBinding.ensureInitialized().window.devicePixelRatio);
     _textScale =
         WidgetsFlutterBinding.ensureInitialized().window.textScaleFactor;
-    _settings = settings ??
-        SupaTextSettings(
-            textThemeScales: TextThemeScales(),
-            m3DefaultSizes: M3DefaultSizes());
-    _lightTextThemeBase =
-        _ligth.textTheme.merge(_prepareTextTheme(_ligth.textTheme));
-    _lightTextTheme = _lightTextThemeBase;
+    _setTheme(theme, false);
+    _setTheme(darkTheme, true);
   }
 
   late final SupaTextSettings _settings;
@@ -33,11 +45,10 @@ class AppController with ChangeNotifier {
   // late final TextTheme? _baseDarkTextTheme;
 
   late ThemeMode _themeMode;
-  late ThemeData _ligth;
-  late ThemeData? _dark;
-  late TextTheme _lightTextTheme;
-  TextTheme? _darkTextTheme;
-  late final TextTheme _lightTextThemeBase;
+  late ThemeData _theme;
+  late ThemeData _dark;
+  late final TextTheme _textThemeBase;
+  late final TextTheme _darkTextThemeBase;
   // late final TextTheme? _darkTextThemeBase;
   late ScreenSize _ss;
   late double _textScale;
@@ -49,7 +60,7 @@ class AppController with ChangeNotifier {
 
   //getters
   ScreenSize get ss => _ss;
-  ThemeData get themeData => _ligth.copyWith(textTheme: _lightTextTheme);
+  ThemeData get themeData => _theme;
   ThemeData? get darkThemeData => _dark;
   ThemeMode get themeMode => _themeMode;
   AppLifecycleState get state => _state.value;
@@ -58,22 +69,22 @@ class AppController with ChangeNotifier {
   ValueNotifier<AppLifecycleState> get lastStateNotifier => _lastsState;
 
   onTextScaleChanged() {
-    _textScale = WidgetsBinding.instance!.window.textScaleFactor;
-    _recalculateTextTheme();
+    _textScale = WidgetsBinding.instance.window.textScaleFactor;
+    _theme = _recalculateTextTheme(_textThemeBase);
+    _dark = _recalculateTextTheme(_darkTextThemeBase);
     notifyListeners();
   }
 
   ///Do not call it out runApp.
   void verifySizes() {
-    final width = WidgetsBinding.instance?.window.physicalSize.width;
-    final pRatio = WidgetsBinding.instance?.window.devicePixelRatio;
-    assert(width != null && pRatio != null,
-        'Wrong use of verifySizes. Use only insede runApp');
-    final newSs = ssFromWidth(width! / pRatio!);
+    final width = WidgetsBinding.instance.window.physicalSize.width;
+    final pRatio = WidgetsBinding.instance.window.devicePixelRatio;
+    final newSs = ssFromWidth(width / pRatio);
 
     if (_ss != newSs) {
       _ss = newSs;
-      _recalculateTextTheme();
+      _theme = _recalculateTextTheme(_textThemeBase);
+      _dark = _recalculateTextTheme(_darkTextThemeBase);
       notifyListeners();
     }
   }
@@ -88,87 +99,72 @@ class AppController with ChangeNotifier {
     if (canNotifyListeners) notifyListeners();
   }
 
-  void _recalculateTextTheme() {
-    {
-      switch (_ss) {
-        case ScreenSize.xs:
-          _lightTextTheme = _lightTextThemeBase;
+  ThemeData _recalculateTextTheme(TextTheme base) {
+    late final TextTheme textTheme;
+    switch (_ss) {
+      case ScreenSize.xs:
+        textTheme = base.copyWith(
+            displaySmall: base.displaySmall?.apply(
+                fontSizeFactor: _textScale * _settings.textThemeScales.xsScale),
+            headlineLarge: base.headlineLarge?.apply(
+                fontSizeFactor: _textScale * _settings.textThemeScales.xsScale),
+            headlineMedium: base.headlineMedium?.apply(
+                fontSizeFactor: _textScale * _settings.textThemeScales.xsScale),
+            headlineSmall: base.headlineSmall?.apply(
+                fontSizeFactor: _textScale * _settings.textThemeScales.xsScale),
+            bodyLarge: base.bodyLarge?.apply(
+                fontSizeFactor: _textScale * _settings.textThemeScales.xsScale),
+            bodyMedium: base.bodyMedium?.apply(
+                fontSizeFactor: _textScale * _settings.textThemeScales.xsScale),
+            bodySmall: base.bodySmall?.apply(
+                fontSizeFactor:
+                    _textScale * _settings.textThemeScales.xsScale));
+        break;
+      case ScreenSize.s:
+        textTheme = base;
+        break;
+      case ScreenSize.m:
+        textTheme = base.copyWith(
+          displaySmall: base.displaySmall?.apply(
+              fontSizeFactor: _textScale * _settings.textThemeScales.mScale),
+          headlineLarge: base.headlineLarge?.apply(
+              fontSizeFactor: _textScale * _settings.textThemeScales.mScale),
+          headlineMedium: base.headlineMedium?.apply(
+              fontSizeFactor: _textScale * _settings.textThemeScales.mScale),
+        );
 
-          _lightTextTheme = _lightTextThemeBase.copyWith(
-              displaySmall: _lightTextThemeBase.displaySmall?.apply(
-                  fontSizeFactor:
-                      _textScale * _settings.textThemeScales.xsScale),
-              headlineLarge: _lightTextThemeBase.headlineLarge?.apply(
-                  fontSizeFactor:
-                      _textScale * _settings.textThemeScales.xsScale),
-              headlineMedium: _lightTextThemeBase.headlineMedium?.apply(
-                  fontSizeFactor:
-                      _textScale * _settings.textThemeScales.xsScale),
-              headlineSmall: _lightTextThemeBase.headlineSmall?.apply(
-                  fontSizeFactor:
-                      _textScale * _settings.textThemeScales.xsScale),
-              bodyLarge: _lightTextThemeBase.bodyLarge?.apply(
-                  fontSizeFactor:
-                      _textScale * _settings.textThemeScales.xsScale),
-              bodyMedium: _lightTextThemeBase.bodyMedium?.apply(
-                  fontSizeFactor:
-                      _textScale * _settings.textThemeScales.xsScale),
-              bodySmall: _lightTextThemeBase.bodySmall?.apply(
-                  fontSizeFactor:
-                      _textScale * _settings.textThemeScales.xsScale));
-          break;
-        case ScreenSize.s:
-          _lightTextTheme = _lightTextThemeBase;
+        break;
+      case ScreenSize.l:
+        textTheme = base.copyWith(
+            displaySmall: base.displaySmall?.apply(
+                fontSizeFactor: _textScale * _settings.textThemeScales.lScale),
+            headlineLarge: base.headlineLarge?.apply(
+                fontSizeFactor: _textScale * _settings.textThemeScales.lScale),
+            headlineMedium: base.headlineMedium?.apply(
+                fontSizeFactor: _textScale * _settings.textThemeScales.lScale));
 
-          break;
-        case ScreenSize.m:
-          _lightTextTheme = _lightTextThemeBase;
-          _lightTextTheme = _lightTextThemeBase.copyWith(
-            displaySmall: _lightTextThemeBase.displaySmall?.apply(
-                fontSizeFactor: _textScale * _settings.textThemeScales.mScale),
-            headlineLarge: _lightTextThemeBase.headlineLarge?.apply(
-                fontSizeFactor: _textScale * _settings.textThemeScales.mScale),
-            headlineMedium: _lightTextThemeBase.headlineMedium?.apply(
-                fontSizeFactor: _textScale * _settings.textThemeScales.mScale),
-          );
+        break;
+      case ScreenSize.xl:
+        textTheme = base.copyWith(
+          displaySmall: base.displaySmall?.apply(
+              fontSizeFactor: _textScale * _settings.textThemeScales.xlScale),
+          headlineLarge: base.headlineLarge?.apply(
+              fontSizeFactor: _textScale * _settings.textThemeScales.xlScale),
+          headlineMedium: base.headlineMedium?.apply(
+              fontSizeFactor: _textScale * _settings.textThemeScales.xlScale),
+          headlineSmall: base.headlineSmall?.apply(
+              fontSizeFactor: _textScale * _settings.textThemeScales.xlScale),
+          bodyLarge: base.bodyLarge?.apply(
+              fontSizeFactor: _textScale * _settings.textThemeScales.xlScale),
+          bodyMedium: base.bodyMedium?.apply(
+              fontSizeFactor: _textScale * _settings.textThemeScales.xlScale),
+          bodySmall: base.bodySmall?.apply(
+              fontSizeFactor: _textScale * _settings.textThemeScales.xlScale),
+        );
 
-          break;
-        case ScreenSize.l:
-          _lightTextTheme = _lightTextThemeBase;
-          _lightTextTheme = _lightTextThemeBase.copyWith(
-              displaySmall: _lightTextThemeBase.displaySmall?.apply(
-                  fontSizeFactor:
-                      _textScale * _settings.textThemeScales.lScale),
-              headlineLarge: _lightTextThemeBase.headlineLarge?.apply(
-                  fontSizeFactor:
-                      _textScale * _settings.textThemeScales.lScale),
-              headlineMedium: _lightTextThemeBase.headlineMedium?.apply(
-                  fontSizeFactor:
-                      _textScale * _settings.textThemeScales.lScale));
-
-          break;
-        case ScreenSize.xl:
-          _lightTextTheme = _lightTextThemeBase;
-          _lightTextTheme = _lightTextThemeBase.copyWith(
-            displaySmall: _lightTextThemeBase.displaySmall?.apply(
-                fontSizeFactor: _textScale * _settings.textThemeScales.xlScale),
-            headlineLarge: _lightTextThemeBase.headlineLarge?.apply(
-                fontSizeFactor: _textScale * _settings.textThemeScales.xlScale),
-            headlineMedium: _lightTextThemeBase.headlineMedium?.apply(
-                fontSizeFactor: _textScale * _settings.textThemeScales.xlScale),
-            headlineSmall: _lightTextThemeBase.headlineSmall?.apply(
-                fontSizeFactor: _textScale * _settings.textThemeScales.xlScale),
-            bodyLarge: _lightTextThemeBase.bodyLarge?.apply(
-                fontSizeFactor: _textScale * _settings.textThemeScales.xlScale),
-            bodyMedium: _lightTextThemeBase.bodyMedium?.apply(
-                fontSizeFactor: _textScale * _settings.textThemeScales.xlScale),
-            bodySmall: _lightTextThemeBase.bodySmall?.apply(
-                fontSizeFactor: _textScale * _settings.textThemeScales.xlScale),
-          );
-
-          break;
-      }
+        break;
     }
+    return _theme.copyWith(textTheme: textTheme);
   }
 
 //If theme doesn't has fontsSize, it will be set to default
@@ -207,5 +203,38 @@ class AppController with ChangeNotifier {
       );
     }
     return theme;
+  }
+
+//Generatedefaults themes
+  ThemeData _defaultTheme({bool isDark = false}) => ThemeData.from(
+      colorScheme:
+          isDark ? const ColorScheme.dark() : const ColorScheme.light(),
+      useMaterial3: true,
+      textTheme: _prepareTextTheme(isDark
+          ? Typography.material2021().white
+          : Typography.material2021().black));
+
+  void _setTheme(ThemeData? theme, bool isDark) {
+    if (isDark) {
+      if (theme == null) {
+        _darkTextThemeBase =
+            _dark.textTheme.merge(_prepareTextTheme(_theme.textTheme));
+        _dark = _dark.copyWith(
+          textTheme: _darkTextThemeBase,
+        );
+      } else {
+        _darkTextThemeBase = theme.textTheme;
+      }
+      _dark = _recalculateTextTheme(_darkTextThemeBase);
+    } else {
+      if (theme == null) {
+        _textThemeBase =
+            _theme.textTheme.merge(_prepareTextTheme(_theme.textTheme));
+        _theme = _theme.copyWith(textTheme: _textThemeBase);
+      } else {
+        _textThemeBase = theme.textTheme;
+      }
+      _theme = _recalculateTextTheme(_textThemeBase);
+    }
   }
 }
