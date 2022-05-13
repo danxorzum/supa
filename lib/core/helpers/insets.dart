@@ -12,7 +12,7 @@ class SupaInsets {
   // Offset, used for the edge of the window, or to separate large sections in the app
   static double get spacer => 40 * offsetScale;
 
-  ///Get the right padding for the screen size
+  ///Get the right instets value for you screen size
   static double getInsetValue(double width) {
     switch (ScreenSize.whatsSize(width)) {
       case ScreenSize.xs:
@@ -30,6 +30,7 @@ class SupaInsets {
     }
   }
 
+  ///Get horizontal [EdgeInsets] based on [width]
   static EdgeInsets horizontal(double width) {
     switch (ScreenSize.whatsSize(width)) {
       case ScreenSize.xs:
@@ -45,6 +46,7 @@ class SupaInsets {
     }
   }
 
+  ///Get vertical [EdgeInsets] based on [width]
   static EdgeInsets vertical(double width) {
     switch (ScreenSize.whatsSize(width)) {
       case ScreenSize.xs:
@@ -60,6 +62,7 @@ class SupaInsets {
     }
   }
 
+  ///Get all [EdgeInsets] based on [width]
   static EdgeInsets all(double width) {
     switch (ScreenSize.whatsSize(width)) {
       case ScreenSize.xs:

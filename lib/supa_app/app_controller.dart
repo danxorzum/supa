@@ -54,23 +54,50 @@ class AppController with ChangeNotifier {
       ValueNotifier<AppLifecycleState>(AppLifecycleState.inactive);
 
   //getters
+  ///The current [ScreenSize] of the app.
   ScreenSize get ss => _ss;
+
+  ///The current [TextTheme] of the app.
+  ///Set the [TextTheme] of the app with the [AppController.themeData]
   ThemeData get themeData => _theme;
-  ThemeData? get darkThemeData => _dark;
+
+  ///Dark theme of the app.
+  ///if you don't need a dark theme just don't use it.
+  ThemeData get darkThemeData => _dark;
+
+  ///By defaul the [ThemeMode] of the app is [ThemeMode.system].
   ThemeMode get themeMode => _themeMode;
+
+  ///Get the current [AppLifecycleState] of the app.
   AppLifecycleState get state => _state.value;
+
+  ///Get the last [AppLifecycleState] of the app.
   AppLifecycleState get lastState => _lastsState.value;
+
+  ///Get the current [AppLifecycleState] in a value notifier.
+  ///you can use it to listen to the state of the app.
   ValueNotifier<AppLifecycleState> get stateNotifier => _state;
+
+  ///Get the last [AppLifecycleState] in a value notifier.
+  ///you can use it to listen to the state of the app.
   ValueNotifier<AppLifecycleState> get lastStateNotifier => _lastsState;
 
-  onTextScaleChanged() {
+  ///Ff you are using [SupaApp] you don't need to call this method.
+  ///[SupaApp] will listen for you.
+  ///
+  ///Call it when the [textScaleFactor] of the app change.
+  void onTextScaleChanged() {
     _textScale = WidgetsBinding.instance.window.textScaleFactor;
     _theme = _recalculateTextTheme(_textThemeBase);
     _dark = _recalculateTextTheme(_darkTextThemeBase);
     notifyListeners();
   }
 
+  ///if you are using [SupaApp] you don't need to call this method.
+  ///[SupaApp] will listen for you.
+  ///
   ///Do not call it out runApp.
+  ///Call it when device dimensions changes.
   void verifySizes() {
     final width = WidgetsBinding.instance.window.physicalSize.width;
     final pRatio = WidgetsBinding.instance.window.devicePixelRatio;
@@ -84,9 +111,11 @@ class AppController with ChangeNotifier {
     }
   }
 
-  ///Do not call it never if you are using [SupaApp].
+  ///if you are using [SupaApp] you don't need to call this method.
   ///[SupaApp] will listend [AppLifecycleState] changes.
-  ///if you aren't using [SupaApp] you can call it manually.
+  ///By default [SupaApp] set[canNotifyListeners] to true.
+  ///
+  ///Call it when the [AppLifecycleState] of the app change.
   ///you can decide if notifyListeners() or not whit [canNotifyListeners].
   void updateLifecycleState(AppLifecycleState state, bool canNotifyListeners) {
     _lastsState.value = _state.value;
@@ -231,5 +260,13 @@ class AppController with ChangeNotifier {
       }
       _theme = _recalculateTextTheme(_textThemeBase);
     }
+  }
+
+  ///If you are using [SupaApp] it rebuilds theme on theme change.
+  ///
+  ///Change your app [Theme] and notify [SupaApp] or any [Listeners].
+  void changeThemeMode(ThemeMode newMode) {
+    _themeMode = newMode;
+    notifyListeners();
   }
 }

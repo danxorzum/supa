@@ -7,10 +7,11 @@ extension SupaContext on BuildContext {
   double get sHeight => sSize.height;
 
   //theme
-  TextTheme get sTextTheme => Theme.of(this).textTheme;
   ThemeData get sTheme => Theme.of(this);
-  ColorScheme get sColorScheme => sTheme.colorScheme;
+  TextTheme get sTextTheme => sTheme.textTheme;
+  ColorScheme get colorS => sTheme.colorScheme;
 
+  ///Get your [SupaHelp] its fucking awesome.
   SupaHelp get help => SupaHelp(sWidth);
 
 //Screen size bools

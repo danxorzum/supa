@@ -4,8 +4,7 @@ import 'package:supa/core/core.dart';
 import 'app_controller.dart';
 
 class SupaChild extends InheritedWidget {
-  SupaChild({required this.controller, Key? key, required Widget child})
-      : super(key: key, child: child) {
+  SupaChild({required this.controller, super.key, required super.child}) {
     _ss = controller.ss;
   }
 

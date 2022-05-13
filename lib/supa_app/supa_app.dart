@@ -6,15 +6,29 @@ import 'app_controller.dart';
 
 class SupaApp extends StatefulWidget {
   ///Do not use inside MaterialApp.
+  ///
+  ///[SupaApp] is the main widget of your app.
+  ///it cares about your [AppController] and [SupaChild].
+  ///it also listen a helpus events like device [physicalSize], [AppLifeCycle] and [textScaleFactor].
+  ///it redraws your app when sizes changes.
   ///Use envolving [MaterialApp].
   const SupaApp({
     required this.builder,
     required this.controller,
     this.notifyIfLifeCycleChanged = true,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
+
+  ///builder for your [MaterialApp].
   final Widget Function(BuildContext context) builder;
+
+  /// Your [AppController].
   final AppController controller;
+
+  ///Set false to disable [AppLifeCycle] auto events.
+  ///if[notifyIfLifeCycleChanged] is true, it will notify [AppController] when [AppLifeCycle] changes.
+  ///
+  ///By default it is true.
   final bool notifyIfLifeCycleChanged;
 
   @override
@@ -29,7 +43,6 @@ class _SupaAppState extends State<SupaApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    // widget.controller.recalculateFont();
     widget.controller.addListener(() => setState(() {}));
   }
 
