@@ -1,6 +1,6 @@
-part of 'helpers_tools.dart';
+part of 'helpers.dart';
 
-/// Set of diferent durations
+/// Set of diferent preset durations.
 class SupaDuration {
   /// 50ms.
   static const Duration express = Duration(milliseconds: 50);

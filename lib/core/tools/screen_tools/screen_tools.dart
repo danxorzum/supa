@@ -5,43 +5,33 @@ import '../extensions/export.dart';
 /// Diferent sizes for the app
 enum ScreenSize {
   /// Extra small
-  xs,
+  xs(offset: Offset(0, 360)),
 
   /// Small
-  s,
+  s(offset: Offset(361, 768)),
 
   /// Medium
-  m,
+  m(offset: Offset(769, 1024)),
 
   /// Large
-  l,
+  l(offset: Offset(1025, 1200)),
 
   /// Extra large
-  xl
-}
+  xl(offset: Offset(1201, double.infinity));
 
-class SupaOffsets {
-  static const Offset xs = Offset(0, 360);
-  static const Offset s = Offset(361, 768);
-  static const Offset m = Offset(769, 1024);
-  static const Offset l = Offset(1025, 1200);
-  static const Offset xl = Offset(1201, double.infinity);
-}
+  const ScreenSize({required this.offset});
 
-const Map<ScreenSize, Offset> screensizes = {
-  ScreenSize.xs: SupaOffsets.xs,
-  ScreenSize.s: SupaOffsets.s,
-  ScreenSize.m: SupaOffsets.m,
-  ScreenSize.l: SupaOffsets.l,
-  ScreenSize.xl: SupaOffsets.xl
-};
+  /// Offset for the screen size
+  final Offset offset;
 
-bool isBigAs(double width, ScreenSize screenSize) =>
-    screensizes[screenSize]!.inRange(width);
+  static ScreenSize whatsSize(double width) {
+    assert(
+        width > 0, 'Width must be positive, also has to be real screen size');
 
-//double to ScreenSize
-ScreenSize ssFromWidth(double width) {
-  if (width < 0) return ScreenSize.xs;
-  return ScreenSize.values
-      .firstWhere((element) => screensizes[element]!.inRange(width));
+    for (var element in ScreenSize.values) {
+      if (element.offset.isInRange(width)) return element;
+    }
+
+    throw Exception('No screen size found for width: $width');
+  }
 }

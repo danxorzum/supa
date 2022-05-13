@@ -15,6 +15,9 @@ class SupaTools {
     return constraints.maxWidth > maxWidth ? page : screen;
   }
 
+  /// Created a TextTheme based only on [displayMedium], [headlineMedium], [titleMedium], [bodyMedium], [labelMedium].
+  /// Automatically sets the rest of the TextTheme.
+  /// Your mediums [TextStyle]s have to  has fontSize.
   static TextTheme customFastTextTheme({
     required TextStyle displayMedium,
     required TextStyle headlineMedium,
