@@ -1,4 +1,4 @@
-part of 'helpers_tools.dart';
+part of 'helpers.dart';
 
 class SupaCorners {
   static const double sm = 3;
@@ -15,7 +15,7 @@ class SupaCorners {
 
 //Get the corner radius for the screen size
   static double getCorner(double width) {
-    switch (ssFromWidth(width)) {
+    switch (ScreenSize.whatsSize(width)) {
       case ScreenSize.xs:
       case ScreenSize.s:
         return sm;
@@ -31,7 +31,7 @@ class SupaCorners {
 
   ///Get the border radius for the screen size
   static BorderRadius getCornerBorder(double width) {
-    switch (ssFromWidth(width)) {
+    switch (ScreenSize.whatsSize(width)) {
       case ScreenSize.xs:
       case ScreenSize.s:
         return smBorder;
@@ -47,7 +47,7 @@ class SupaCorners {
 
   ///Get the radius for the screen size
   static Radius getCornerRadius(double width) {
-    switch (ssFromWidth(width)) {
+    switch (ScreenSize.whatsSize(width)) {
       case ScreenSize.xs:
       case ScreenSize.s:
         return smRadius;

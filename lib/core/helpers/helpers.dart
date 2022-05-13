@@ -5,6 +5,7 @@ import '../tools/screen_tools/screen_tools.dart';
 part 'insets.dart';
 part 'corners.dart';
 part 'duration.dart';
+part 'supa_help.dart';
 
 //TODO:  end this shit
 class Strokes {

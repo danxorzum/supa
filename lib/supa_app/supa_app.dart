@@ -70,7 +70,7 @@ class _SupaAppState extends State<SupaApp> with WidgetsBindingObserver {
   }
 
   _updateSize() {
-    if (widget.controller.ss != ssFromWidth(_size.width * _ratio)) {
+    if (widget.controller.ss != ScreenSize.whatsSize(_size.width * _ratio)) {
       widget.controller.verifySizes();
     }
   }

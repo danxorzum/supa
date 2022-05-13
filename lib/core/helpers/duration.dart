@@ -1,4 +1,4 @@
-part of 'helpers_tools.dart';
+part of 'helpers.dart';
 
 /// Set of diferent durations
 class SupaDuration {

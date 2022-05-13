@@ -1,4 +1,4 @@
-part of 'helpers_tools.dart';
+part of 'helpers.dart';
 
 class SupaInsets {
   static double scale = 1;
@@ -14,7 +14,7 @@ class SupaInsets {
 
   ///Get the right padding for the screen size
   static double getInsetValue(double width) {
-    switch (ssFromWidth(width)) {
+    switch (ScreenSize.whatsSize(width)) {
       case ScreenSize.xs:
         return xs;
       case ScreenSize.s:
@@ -31,7 +31,7 @@ class SupaInsets {
   }
 
   static EdgeInsets horizontal(double width) {
-    switch (ssFromWidth(width)) {
+    switch (ScreenSize.whatsSize(width)) {
       case ScreenSize.xs:
         return EdgeInsets.symmetric(horizontal: xs);
       case ScreenSize.s:
@@ -46,7 +46,7 @@ class SupaInsets {
   }
 
   static EdgeInsets vertical(double width) {
-    switch (ssFromWidth(width)) {
+    switch (ScreenSize.whatsSize(width)) {
       case ScreenSize.xs:
         return EdgeInsets.symmetric(vertical: xs);
       case ScreenSize.s:
@@ -61,7 +61,7 @@ class SupaInsets {
   }
 
   static EdgeInsets all(double width) {
-    switch (ssFromWidth(width)) {
+    switch (ScreenSize.whatsSize(width)) {
       case ScreenSize.xs:
         return EdgeInsets.all(xs);
       case ScreenSize.s:
@@ -81,7 +81,7 @@ class SupaInsets {
       bool bottom = false,
       bool left = true,
       bool rigth = false}) {
-    switch (ssFromWidth(width)) {
+    switch (ScreenSize.whatsSize(width)) {
       case ScreenSize.xs:
         return EdgeInsets.only(
             top: top ? xs : 0.0,

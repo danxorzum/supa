@@ -31,7 +31,7 @@ class AppController with ChangeNotifier {
     _theme = theme ?? _defaultTheme();
     _dark = darkTheme ?? _defaultTheme(isDark: true);
     _themeMode = themeMode ?? ThemeMode.system;
-    _ss = ssFromWidth(
+    _ss = ScreenSize.whatsSize(
         WidgetsFlutterBinding.ensureInitialized().window.physicalSize.width /
             WidgetsFlutterBinding.ensureInitialized().window.devicePixelRatio);
     _textScale =
@@ -41,22 +41,17 @@ class AppController with ChangeNotifier {
   }
 
   late final SupaTextSettings _settings;
-  // late final TextTheme _baseTextTheme;
-  // late final TextTheme? _baseDarkTextTheme;
-
   late ThemeMode _themeMode;
   late ThemeData _theme;
   late ThemeData _dark;
   late final TextTheme _textThemeBase;
   late final TextTheme _darkTextThemeBase;
-  // late final TextTheme? _darkTextThemeBase;
   late ScreenSize _ss;
   late double _textScale;
   final ValueNotifier<AppLifecycleState> _state =
       ValueNotifier<AppLifecycleState>(AppLifecycleState.resumed);
   final ValueNotifier<AppLifecycleState> _lastsState =
       ValueNotifier<AppLifecycleState>(AppLifecycleState.inactive);
-  // final bool useMaterial3;
 
   //getters
   ScreenSize get ss => _ss;
@@ -79,7 +74,7 @@ class AppController with ChangeNotifier {
   void verifySizes() {
     final width = WidgetsBinding.instance.window.physicalSize.width;
     final pRatio = WidgetsBinding.instance.window.devicePixelRatio;
-    final newSs = ssFromWidth(width / pRatio);
+    final newSs = ScreenSize.whatsSize(width / pRatio);
 
     if (_ss != newSs) {
       _ss = newSs;
