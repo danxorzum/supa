@@ -64,6 +64,7 @@ class _SupaCodeFormState extends State<SupaCodeForm> {
     final theme = Theme.of(context);
     final inputTheme = theme.inputDecorationTheme;
     final textTheme = theme.textTheme;
+    final padding = EdgeInsets.symmetric(vertical: size.width * 0.05);
 
     final constraints = widget.constraints ??
         BoxConstraints(
@@ -75,108 +76,92 @@ class _SupaCodeFormState extends State<SupaCodeForm> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(
-              width: constraints.maxWidth,
-              height: constraints.maxWidth,
-              child: TextField(
-                enabled: _enabled,
-                controller: _textController1,
-                textAlign: TextAlign.center,
-                focusNode: _focusField1,
-                onChanged: (value) {
-                  if (value.length == 1) {
-                    _focusField2.requestFocus();
-                  }
-                  if (value.length > 1) {
-                    _textController1.text = value[value.length - 1];
-                    _focusField2.requestFocus();
-                  }
-                },
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  constraints: constraints,
+            TextField(
+              enabled: _enabled,
+              controller: _textController1,
+              textAlign: TextAlign.center,
+              focusNode: _focusField1,
+              onChanged: (value) {
+                if (value.length == 1) {
+                  _focusField2.requestFocus();
+                }
+                if (value.length > 1) {
+                  _textController1.text = value[value.length - 1];
+                  _focusField2.requestFocus();
+                }
+              },
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                  contentPadding: padding,
                   enabledBorder: _error
                       ? inputTheme.errorBorder
                       : inputTheme.enabledBorder,
-                ),
-              ),
+                  constraints: constraints),
             ),
-            SizedBox(
-              width: constraints.maxWidth,
-              height: constraints.maxWidth,
-              child: TextField(
-                enabled: _enabled,
-                controller: _textController2,
-                textAlign: TextAlign.center,
-                focusNode: _focusField2,
-                onChanged: (value) {
-                  if (value.length == 1) _focusField3.requestFocus();
+            TextField(
+              enabled: _enabled,
+              controller: _textController2,
+              textAlign: TextAlign.center,
+              focusNode: _focusField2,
+              onChanged: (value) {
+                if (value.length == 1) _focusField3.requestFocus();
 
-                  if (value.length > 1) {
-                    _textController2.text = value[value.length - 1];
-                    _focusField3.requestFocus();
-                  }
-                },
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  constraints: constraints,
-                  enabledBorder: _error
-                      ? inputTheme.errorBorder
-                      : inputTheme.enabledBorder,
-                ),
+                if (value.length > 1) {
+                  _textController2.text = value[value.length - 1];
+                  _focusField3.requestFocus();
+                }
+              },
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                constraints: constraints,
+                enabledBorder:
+                    _error ? inputTheme.errorBorder : inputTheme.enabledBorder,
+                contentPadding: padding,
               ),
             ),
-            SizedBox(
-              width: constraints.maxWidth,
-              height: constraints.maxWidth,
-              child: TextField(
-                enabled: _enabled,
-                controller: _textController3,
-                textAlign: TextAlign.center,
-                focusNode: _focusField3,
-                onChanged: (value) {
-                  if (value.length == 1) _focusField4.requestFocus();
-                  if (value.length > 1) {
-                    _textController3.text = value[value.length - 1];
-                    _focusField4.requestFocus();
-                  }
-                },
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
+            TextField(
+              enabled: _enabled,
+              controller: _textController3,
+              textAlign: TextAlign.center,
+              focusNode: _focusField3,
+              onChanged: (value) {
+                if (value.length == 1) _focusField4.requestFocus();
+                if (value.length > 1) {
+                  _textController3.text = value[value.length - 1];
+                  _focusField4.requestFocus();
+                }
+              },
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
                   constraints: constraints,
                   enabledBorder: _error
                       ? inputTheme.errorBorder
                       : inputTheme.enabledBorder,
-                ),
-              ),
+                  contentPadding: padding),
             ),
-            SizedBox(
-              width: constraints.maxWidth,
-              height: constraints.maxWidth,
-              child: TextField(
-                enabled: _enabled,
-                controller: _textController4,
-                textAlign: TextAlign.center,
-                focusNode: _focusField4,
-                onChanged: (value) async {
-                  if (value.length == 1) {
-                    await _onSubmit();
-                  }
-                  if (value.length > 1) {
-                    _textController4.text = value[value.length - 1];
-                    _textController4.selection =
-                        const TextSelection(baseOffset: 1, extentOffset: 1);
-                    await _onSubmit();
-                  }
-                },
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
+            TextField(
+              enabled: _enabled,
+              controller: _textController4,
+              textAlign: TextAlign.center,
+              focusNode: _focusField4,
+              onChanged: (value) async {
+                if (value.length == 1) {
+                  await _onSubmit();
+                }
+                if (value.length > 1) {
+                  _textController4.text = value[value.length - 1];
+                  _textController4.selection =
+                      const TextSelection(baseOffset: 1, extentOffset: 1);
+                  await _onSubmit();
+                }
+              },
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
                   constraints: constraints,
                   enabledBorder: _error
                       ? inputTheme.errorBorder
                       : inputTheme.enabledBorder,
-                ),
-              ),
+                  contentPadding: padding),
             ),
           ],
         ),

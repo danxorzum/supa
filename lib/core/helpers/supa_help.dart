@@ -11,15 +11,19 @@ class SupaHelp {
     horizontalIns = SupaInsets.horizontal(width);
     verticalIns = SupaInsets.vertical(width);
     allIns = SupaInsets.all(width);
-    columnSpaceLarge = SizedBox(height: SupaInsets.getInsetValue(width * 1.5));
-    columnSpace = SizedBox(height: SupaInsets.getInsetValue(width));
-    columnSpaceSmall = SizedBox(height: SupaInsets.getInsetValue(width * 0.5));
-    rowSpaceLarge = SizedBox(width: SupaInsets.getInsetValue(width * 1.5));
-    rowSpace = SizedBox(width: SupaInsets.getInsetValue(width));
-    rowSpaceSmall = SizedBox(width: SupaInsets.getInsetValue(width * 0.5));
+    allInsSmall = SupaInsets.all(width, isSmall: true);
+    insValue = SupaInsets.getInsetValue(width);
+    insValueLarge = insValue * 1.5;
+    insValueSmall = insValue * 0.5;
+    columnSpaceLarge = SizedBox(height: insValueLarge);
+    columnSpace = SizedBox(height: insValue);
+    columnSpaceSmall = SizedBox(height: insValueSmall);
+    rowSpaceLarge = SizedBox(width: insValueLarge);
+    rowSpace = SizedBox(width: insValue);
+    rowSpaceSmall = SizedBox(width: insValueSmall);
     corner = SupaCorners.getCorner(width);
-    radius = Radius.circular(SupaCorners.getCorner(width));
-    borderRadius = BorderRadius.circular(SupaCorners.getCorner(width));
+    radius = Radius.circular(corner);
+    borderRadius = BorderRadius.circular(corner);
   }
 
   final double width;
@@ -32,6 +36,18 @@ class SupaHelp {
 
   /// Responsive [EdgeInsets.all].
   late final EdgeInsets allIns;
+
+  /// Responsive [EdgeInsets.all].
+  late final EdgeInsets allInsSmall;
+
+  /// Responsive [double] based on [SupaInsets.getInsetValue].
+  late final double insValueLarge;
+
+  /// Responsive [double] based on [SupaInsets.getInsetValue].
+  late final double insValue;
+
+  /// Responsive [double] based on [SupaInsets.getInsetValue].
+  late final double insValueSmall;
 
   /// Responsive large [SizedBox] using [height].
   late final SizedBox columnSpaceLarge;
@@ -66,7 +82,7 @@ class SupaHelp {
   EdgeInsets only(
           {bool top = false,
           bool bottom = false,
-          bool left = true,
+          bool left = false,
           bool rigth = false}) =>
       SupaInsets.only(width,
           top: top, bottom: bottom, left: left, rigth: rigth);

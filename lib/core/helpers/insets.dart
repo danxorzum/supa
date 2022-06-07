@@ -63,18 +63,18 @@ class SupaInsets {
   }
 
   ///Get all [EdgeInsets] based on [width]
-  static EdgeInsets all(double width) {
+  static EdgeInsets all(double width, {bool isSmall = false}) {
     switch (ScreenSize.whatsSize(width)) {
       case ScreenSize.xs:
-        return EdgeInsets.all(xs);
+        return EdgeInsets.all(isSmall ? xs / 2 : xs);
       case ScreenSize.s:
-        return EdgeInsets.all(sm);
+        return EdgeInsets.all(isSmall ? sm / 2 : sm);
       case ScreenSize.m:
-        return EdgeInsets.all(med);
+        return EdgeInsets.all(isSmall ? med / 2 : med);
       case ScreenSize.l:
-        return EdgeInsets.all(lg);
+        return EdgeInsets.all(isSmall ? lg / 2 : lg);
       case ScreenSize.xl:
-        return EdgeInsets.all(xl);
+        return EdgeInsets.all(isSmall ? xl / 2 : xl);
     }
   }
 

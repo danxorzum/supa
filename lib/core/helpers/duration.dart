@@ -5,6 +5,9 @@ class SupaDuration {
   /// 50ms.
   static const Duration express = Duration(milliseconds: 50);
 
+  /// 100ms.
+  static const Duration ultraFast = Duration(milliseconds: 100);
+
   /// 150ms.
   static const Duration fastest = Duration(milliseconds: 150);
 

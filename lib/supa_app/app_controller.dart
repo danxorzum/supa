@@ -5,8 +5,11 @@ import 'supa_text_settings.dart';
 
 class AppController with ChangeNotifier {
   ///Created a controller for the app.
+  ///
   ///The controller automatically manage rezing of the  font app.
+  ///
   ///The controller defaults only work with material 3.
+  ///
   ///If you don't sent [theme] or [darkTheme] automatically the controller will create it.
   ///if you don't want a [darkTheme] just doesn't use it.
   AppController({
@@ -54,6 +57,7 @@ class AppController with ChangeNotifier {
       ValueNotifier<AppLifecycleState>(AppLifecycleState.inactive);
 
   //getters
+
   ///The current [ScreenSize] of the app.
   ScreenSize get ss => _ss;
 
@@ -111,7 +115,7 @@ class AppController with ChangeNotifier {
     }
   }
 
-  ///if you are using [SupaApp] you don't need to call this method.
+  ///If you are using [SupaApp] you don't need to call this method.
   ///[SupaApp] will listend [AppLifecycleState] changes.
   ///By default [SupaApp] set[canNotifyListeners] to true.
   ///
@@ -123,6 +127,7 @@ class AppController with ChangeNotifier {
     if (canNotifyListeners) notifyListeners();
   }
 
+  ///Rezise the font of the app.
   ThemeData _recalculateTextTheme(TextTheme base) {
     late final TextTheme textTheme;
     switch (_ss) {
