@@ -5,3 +5,4 @@ import '../../helpers/helpers.dart';
 
 part 'context_extensions.dart';
 part 'offset_extensions.dart';
+part 'constraints_extensions.dart';

@@ -8,10 +8,10 @@ enum ScreenSize {
   xs(offset: Offset(0, 360)),
 
   /// Small
-  s(offset: Offset(361, 768)),
+  s(offset: Offset(361, 599)),
 
   /// Medium
-  m(offset: Offset(769, 1024)),
+  m(offset: Offset(600, 1024)),
 
   /// Large
   l(offset: Offset(1025, 1200)),

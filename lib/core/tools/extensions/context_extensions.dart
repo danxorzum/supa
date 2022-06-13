@@ -21,6 +21,18 @@ extension SupaContext on BuildContext {
   bool get isL => ScreenSize.l.offset.isInRange(sWidth);
   bool get isXl => ScreenSize.xl.offset.isInRange(sWidth);
 
+  bool get biggerThanXs => sWidth > ScreenSize.xs.offset.dx;
+  bool get biggerThanS => sWidth > ScreenSize.s.offset.dx;
+  bool get biggerThanM => sWidth > ScreenSize.m.offset.dx;
+  bool get biggerThanL => sWidth > ScreenSize.l.offset.dx;
+  bool get biggerThanXl => sWidth > ScreenSize.xl.offset.dx;
+
+  bool get smallerThanXs => sWidth < ScreenSize.xs.offset.dx;
+  bool get smallerThanS => sWidth < ScreenSize.s.offset.dx;
+  bool get smallerThanM => sWidth < ScreenSize.m.offset.dx;
+  bool get smallerThanL => sWidth < ScreenSize.l.offset.dx;
+  bool get smallerThanXl => sWidth < ScreenSize.xl.offset.dx;
+
   //M3 text styles
   TextStyle? get displayL => sTextTheme.displayLarge;
   TextStyle? get display => sTextTheme.displayMedium;
