@@ -131,6 +131,30 @@ class AppController with ChangeNotifier {
   ThemeData _recalculateTextTheme(TextTheme base) {
     late final TextTheme textTheme;
     switch (_ss) {
+      case ScreenSize.w:
+        textTheme = base.copyWith(
+            displaySmall: base.displaySmall?.apply(
+                fontSizeFactor:
+                    _textScale * _settings.textThemeScales.xsBigScale),
+            headlineLarge: base.headlineLarge?.apply(
+                fontSizeFactor:
+                    _textScale * _settings.textThemeScales.xsBigScale),
+            headlineMedium: base.headlineMedium?.apply(
+                fontSizeFactor:
+                    _textScale * _settings.textThemeScales.xsBigScale),
+            headlineSmall: base.headlineSmall?.apply(
+                fontSizeFactor:
+                    _textScale * _settings.textThemeScales.xsBigScale),
+            bodyLarge: base.bodyLarge?.apply(
+                fontSizeFactor:
+                    _textScale * _settings.textThemeScales.xsBigScale),
+            bodyMedium: base.bodyMedium?.apply(
+                fontSizeFactor:
+                    _textScale * _settings.textThemeScales.xsBigScale),
+            bodySmall: base.bodySmall?.apply(
+                fontSizeFactor:
+                    _textScale * _settings.textThemeScales.xsBigScale));
+        break;
       case ScreenSize.xs:
         textTheme = base.copyWith(
             displaySmall: base.displaySmall?.apply(

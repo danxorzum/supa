@@ -1,45 +1,68 @@
 part of 'supa_widgets.dart';
 
 class SupaView extends StatelessWidget {
-  SupaView({
-    required this.layout,
+  const SupaView({
+    this.watch,
     this.landscapeMobile,
-    this.portraitMobile,
+    required this.portraitMobile,
     this.landscapeTablet,
     this.portraitTablet,
     this.landscapeDesktop,
     this.portraitDesktop,
+    this.canLanscapeLeft = false,
+    this.canPortraitDown = false,
     super.key,
-  }) {
-    assert(
-        landscapeMobile != null ||
-            portraitMobile != null ||
-            landscapeTablet != null ||
-            portraitTablet != null ||
-            landscapeDesktop != null ||
-            portraitDesktop != null,
-        'You must specify at least one screen size');
-  }
+  });
 
+  final Widget? watch;
   final Widget? landscapeMobile;
-  final Widget? portraitMobile;
+  final Widget portraitMobile;
   final Widget? landscapeTablet;
   final Widget? portraitTablet;
   final Widget? landscapeDesktop;
   final Widget? portraitDesktop;
-  final SupaLayout layout;
+
+  final bool canPortraitDown;
+  final bool canLanscapeLeft;
 
   @override
   Widget build(BuildContext context) {
-    final orientation = MediaQuery.of(context).orientation;
-
-    return LayoutBuilder(builder: (context, constraints) {
-      if (orientation == Orientation.portrait) {
-        if (Platform.isAndroid || Platform.isIOS || Platform.isFuchsia) {
-        } else {
-          // return layout(chil);
-        }
+    final device = context.help.device;
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      if (canPortraitDown) DeviceOrientation.portraitDown,
+      if (device != SupaDevice.watch ||
+          (device.isPhone && landscapeMobile != null) ||
+          (device.isTablet && landscapeTablet != null) ||
+          device == SupaDevice.desktop)
+        DeviceOrientation.landscapeRight,
+      if (canLanscapeLeft && device != SupaDevice.watch ||
+          (device.isPhone && landscapeMobile != null) ||
+          (device.isTablet && landscapeTablet != null) ||
+          device == SupaDevice.desktop)
+        DeviceOrientation.landscapeLeft,
+    ]);
+    return OrientationBuilder(builder: ((context, orientation) {
+      if (orientation == Orientation.landscape) {
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.smallerThanW) return watch ?? portraitMobile;
+            if (constraints.smallerThanS) {
+              return landscapeMobile ?? portraitMobile;
+            }
+            if (constraints.smallerThanM) {
+              return landscapeTablet ?? portraitTablet ?? portraitMobile;
+            }
+            return landscapeDesktop ?? portraitDesktop ?? portraitMobile;
+          },
+        );
       }
-    });
+      return LayoutBuilder(builder: (context, constraints) {
+        if (constraints.smallerThanW) return watch ?? portraitMobile;
+        if (constraints.smallerThanS) return portraitMobile;
+        if (constraints.smallerThanM) return portraitTablet ?? portraitMobile;
+        return portraitDesktop ?? landscapeDesktop ?? portraitMobile;
+      });
+    }));
   }
 }

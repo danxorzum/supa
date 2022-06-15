@@ -12,9 +12,10 @@ extension SupaContext on BuildContext {
   ColorScheme get colorS => sTheme.colorScheme;
 
   ///Get your [SupaHelp] its fucking awesome.
-  SupaHelp get help => SupaHelp(sWidth);
+  SupaHelp get help => SupaHelp(sSize);
 
 //Screen size bools
+  bool get isW => ScreenSize.w.offset.isInRange(sWidth);
   bool get isXs => ScreenSize.xs.offset.isInRange(sWidth);
   bool get isS => ScreenSize.s.offset.isInRange(sWidth);
   bool get isM => ScreenSize.m.offset.isInRange(sWidth);
