@@ -86,6 +86,9 @@ class AppController with ChangeNotifier {
   ///you can use it to listen to the state of the app.
   ValueNotifier<AppLifecycleState> get lastStateNotifier => _lastsState;
 
+  Size get physicalSize =>
+      WidgetsFlutterBinding.ensureInitialized().window.physicalSize;
+
   ///Ff you are using [SupaApp] you don't need to call this method.
   ///[SupaApp] will listen for you.
   ///

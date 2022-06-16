@@ -9,8 +9,8 @@ class SupaView extends StatelessWidget {
     this.portraitTablet,
     this.landscapeDesktop,
     this.portraitDesktop,
-    this.canLanscapeLeft = false,
-    this.canPortraitDown = false,
+    // this.canLanscapeLeft = false,
+    // this.canPortraitDown = false,
     super.key,
   });
 
@@ -22,47 +22,38 @@ class SupaView extends StatelessWidget {
   final Widget? landscapeDesktop;
   final Widget? portraitDesktop;
 
-  final bool canPortraitDown;
-  final bool canLanscapeLeft;
+  // final bool canPortraitDown;
+  // final bool canLanscapeLeft;
 
   @override
   Widget build(BuildContext context) {
     final device = context.help.device;
+    log(context.sSize.aspectRatio.toString());
+//TODO: add  OP validation
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
-      if (canPortraitDown) DeviceOrientation.portraitDown,
-      if (device != SupaDevice.watch ||
-          (device.isPhone && landscapeMobile != null) ||
+      // if (canPortraitDown) DeviceOrientation.portraitDown,
+      if (device != SupaDevice.watch &&
+              (device.isPhone && landscapeMobile != null) ||
           (device.isTablet && landscapeTablet != null) ||
-          device == SupaDevice.desktop)
-        DeviceOrientation.landscapeRight,
-      if (canLanscapeLeft && device != SupaDevice.watch ||
-          (device.isPhone && landscapeMobile != null) ||
-          (device.isTablet && landscapeTablet != null) ||
-          device == SupaDevice.desktop)
+          device == SupaDevice.desktop) ...[
         DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]
     ]);
-    return OrientationBuilder(builder: ((context, orientation) {
-      if (orientation == Orientation.landscape) {
-        return LayoutBuilder(
-          builder: (context, constraints) {
-            if (constraints.smallerThanW) return watch ?? portraitMobile;
-            if (constraints.smallerThanS) {
-              return landscapeMobile ?? portraitMobile;
-            }
-            if (constraints.smallerThanM) {
-              return landscapeTablet ?? portraitTablet ?? portraitMobile;
-            }
-            return landscapeDesktop ?? portraitDesktop ?? portraitMobile;
-          },
-        );
-      }
-      return LayoutBuilder(builder: (context, constraints) {
-        if (constraints.smallerThanW) return watch ?? portraitMobile;
-        if (constraints.smallerThanS) return portraitMobile;
-        if (constraints.smallerThanM) return portraitTablet ?? portraitMobile;
-        return portraitDesktop ?? landscapeDesktop ?? portraitMobile;
-      });
-    }));
+    switch (context.help.device) {
+      case SupaDevice.watch:
+        return watch ?? portraitMobile;
+      case SupaDevice.phonePortrait:
+        return portraitMobile;
+      case SupaDevice.phoneLandscape:
+        return landscapeMobile ?? portraitMobile;
+      case SupaDevice.tabletPortrait:
+        return portraitTablet ?? portraitMobile;
+      case SupaDevice.tabletLandscape:
+        return landscapeTablet ?? portraitTablet ?? portraitMobile;
+      case SupaDevice.desktop:
+        return landscapeDesktop ?? portraitDesktop ?? portraitMobile;
+    }
   }
 }
