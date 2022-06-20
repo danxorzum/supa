@@ -53,7 +53,10 @@ class SupaView extends StatelessWidget {
       case SupaDevice.tabletLandscape:
         return landscapeTablet ?? portraitTablet ?? portraitMobile;
       case SupaDevice.desktop:
-        return landscapeDesktop ?? portraitDesktop ?? portraitMobile;
+        return landscapeDesktop ??
+            portraitDesktop ??
+            landscapeTablet ??
+            portraitMobile;
     }
   }
 }

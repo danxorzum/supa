@@ -75,10 +75,14 @@ class _SupaAppState extends State<SupaApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return SupaChild(
-      controller: widget.controller,
-      child: AnimatedBuilder(
-          animation: widget.controller, builder: (_, __) => widget.builder(_)),
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: SupaChild(
+        controller: widget.controller,
+        child: AnimatedBuilder(
+            animation: widget.controller,
+            builder: (_, __) => widget.builder(_)),
+      ),
     );
   }
 
