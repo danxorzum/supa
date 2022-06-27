@@ -160,6 +160,12 @@ class SupaError {
     }
     return message ?? 'Unknown error';
   }
+
+  Map<String, String> formError() {
+    assert(isValidationError, 'Form error only works if isValidationError');
+    return Map.from(
+        errors!.errors.map((key, value) => MapEntry(key, value[0])));
+  }
 }
 
 class Errors {
