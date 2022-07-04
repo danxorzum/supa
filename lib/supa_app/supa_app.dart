@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:supa/core/core.dart';
+import 'package:supa/supa_app/supa_theme.dart';
+import 'package:supa/supa_app/supa_theme_data.dart';
 import 'supa_child.dart';
 import 'app_controller.dart';
 
@@ -13,6 +15,8 @@ class SupaApp extends StatefulWidget {
   ///it redraws your app when sizes changes.
   ///Use envolving [MaterialApp].
   const SupaApp({
+    this.themeData,
+    this.datkThemeData,
     required this.builder,
     required this.controller,
     this.notifyIfLifeCycleChanged = true,
@@ -30,6 +34,9 @@ class SupaApp extends StatefulWidget {
   ///
   ///By default it is true.
   final bool notifyIfLifeCycleChanged;
+
+  final SupaThemeData? themeData;
+  final SupaThemeData? datkThemeData;
 
   @override
   State<SupaApp> createState() => _SupaAppState();
@@ -77,11 +84,14 @@ class _SupaAppState extends State<SupaApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: SupaChild(
-        controller: widget.controller,
-        child: AnimatedBuilder(
-            animation: widget.controller,
-            builder: (_, __) => widget.builder(_)),
+      child: SupaTheme(
+        supaThemeData: widget.themeData ?? SupaThemeData(),
+        child: SupaChild(
+          controller: widget.controller,
+          child: AnimatedBuilder(
+              animation: widget.controller,
+              builder: (_, __) => widget.builder(_)),
+        ),
       ),
     );
   }

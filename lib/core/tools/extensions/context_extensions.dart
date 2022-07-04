@@ -6,10 +6,11 @@ extension SupaContext on BuildContext {
   double get sWidth => sSize.width;
   double get sHeight => sSize.height;
 
+  //SupaThemeData
+  SupaThemeData get sTheme => SupaTheme.of(this);
   //theme
-  ThemeData get sTheme => Theme.of(this);
-  TextTheme get sTextTheme => sTheme.textTheme;
-  ColorScheme get colorS => sTheme.colorScheme;
+  TextTheme get sTextTheme => Theme.of(this).textTheme;
+  ColorScheme get colorS => Theme.of(this).colorScheme;
 
   ///Get your [SupaHelp] its fucking awesome.
   SupaHelp get help => SupaHelp(sSize);
