@@ -187,17 +187,22 @@ class AppController with ChangeNotifier {
               fontSizeFactor: _textScale * _settings.textThemeScales.mScale),
           headlineMedium: base.headlineMedium?.apply(
               fontSizeFactor: _textScale * _settings.textThemeScales.mScale),
+          labelLarge: base.labelLarge?.apply(
+              fontSizeFactor: _textScale * _settings.textThemeScales.mScale),
         );
 
         break;
       case ScreenSize.l:
         textTheme = base.copyWith(
-            displaySmall: base.displaySmall?.apply(
-                fontSizeFactor: _textScale * _settings.textThemeScales.lScale),
-            headlineLarge: base.headlineLarge?.apply(
-                fontSizeFactor: _textScale * _settings.textThemeScales.lScale),
-            headlineMedium: base.headlineMedium?.apply(
-                fontSizeFactor: _textScale * _settings.textThemeScales.lScale));
+          displaySmall: base.displaySmall?.apply(
+              fontSizeFactor: _textScale * _settings.textThemeScales.lScale),
+          headlineLarge: base.headlineLarge?.apply(
+              fontSizeFactor: _textScale * _settings.textThemeScales.lScale),
+          headlineMedium: base.headlineMedium?.apply(
+              fontSizeFactor: _textScale * _settings.textThemeScales.lScale),
+          labelLarge: base.labelLarge?.apply(
+              fontSizeFactor: _textScale * _settings.textThemeScales.lScale),
+        );
 
         break;
       case ScreenSize.xl:
@@ -215,6 +220,8 @@ class AppController with ChangeNotifier {
           bodyMedium: base.bodyMedium?.apply(
               fontSizeFactor: _textScale * _settings.textThemeScales.xlScale),
           bodySmall: base.bodySmall?.apply(
+              fontSizeFactor: _textScale * _settings.textThemeScales.xlScale),
+          labelLarge: base.labelLarge?.apply(
               fontSizeFactor: _textScale * _settings.textThemeScales.xlScale),
         );
 

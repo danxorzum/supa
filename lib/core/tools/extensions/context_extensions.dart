@@ -9,7 +9,8 @@ extension SupaContext on BuildContext {
   //SupaThemeData
   SupaThemeData get sTheme => SupaTheme.of(this);
   //theme
-  TextTheme get sTextTheme => Theme.of(this).textTheme;
+  AppController get appController => SupaChild.of(this).controller;
+  TextTheme get sTextTheme => appController.themeData.textTheme;
   ColorScheme get colorS => Theme.of(this).colorScheme;
 
   ///Get your [SupaHelp] its fucking awesome.
@@ -36,6 +37,7 @@ extension SupaContext on BuildContext {
   bool get smallerThanXl => sWidth < ScreenSize.xl.offset.dx;
 
   //M3 text styles
+
   TextStyle? get displayL => sTextTheme.displayLarge;
   TextStyle? get display => sTextTheme.displayMedium;
   TextStyle? get displayS => sTextTheme.displaySmall;
