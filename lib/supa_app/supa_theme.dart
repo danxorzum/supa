@@ -14,7 +14,7 @@ class SupaTheme extends InheritedWidget {
     return context
             .dependOnInheritedWidgetOfExactType<SupaTheme>()
             ?._supaThemeData ??
-        SupaThemeData();
+        SupaThemeData.light();
   }
 
   @override

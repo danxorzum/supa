@@ -85,7 +85,7 @@ class _SupaAppState extends State<SupaApp> with WidgetsBindingObserver {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: SupaTheme(
-        supaThemeData: widget.themeData ?? SupaThemeData(),
+        supaThemeData: widget.themeData ?? SupaThemeData.light(),
         child: SupaChild(
           controller: widget.controller,
           child: AnimatedBuilder(

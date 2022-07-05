@@ -10,7 +10,7 @@ extension SupaContext on BuildContext {
   SupaThemeData get sTheme => SupaTheme.of(this);
   //theme
   AppController get appController => SupaChild.of(this).controller;
-  TextTheme get sTextTheme => appController.themeData.textTheme;
+  // TextTheme get sTextTheme => appController.themeData.textTheme;
   ColorScheme get colorS => Theme.of(this).colorScheme;
 
   ///Get your [SupaHelp] its fucking awesome.
@@ -38,19 +38,19 @@ extension SupaContext on BuildContext {
 
   //M3 text styles
 
-  TextStyle? get displayL => sTextTheme.displayLarge;
-  TextStyle? get display => sTextTheme.displayMedium;
-  TextStyle? get displayS => sTextTheme.displaySmall;
-  TextStyle? get headlineL => sTextTheme.headlineLarge;
-  TextStyle? get headline => sTextTheme.headlineMedium;
-  TextStyle? get headlineS => sTextTheme.headlineSmall;
-  TextStyle? get titleL => sTextTheme.titleLarge;
-  TextStyle? get title => sTextTheme.titleMedium;
-  TextStyle? get titleS => sTextTheme.titleSmall;
-  TextStyle? get bodyL => sTextTheme.bodyLarge;
-  TextStyle? get body => sTextTheme.bodyMedium;
-  TextStyle? get bodyS => sTextTheme.bodySmall;
-  TextStyle? get labelL => sTextTheme.labelLarge;
-  TextStyle? get label => sTextTheme.labelMedium;
-  TextStyle? get labelS => sTextTheme.labelSmall;
+  // TextStyle? get displayL => sTextTheme.displayLarge;
+  // TextStyle? get display => sTextTheme.displayMedium;
+  // TextStyle? get displayS => sTextTheme.displaySmall;
+  // TextStyle? get headlineL => sTextTheme.headlineLarge;
+  // TextStyle? get headline => sTextTheme.headlineMedium;
+  // TextStyle? get headlineS => sTextTheme.headlineSmall;
+  // TextStyle? get titleL => sTextTheme.titleLarge;
+  // TextStyle? get title => sTextTheme.titleMedium;
+  // TextStyle? get titleS => sTextTheme.titleSmall;
+  // TextStyle? get bodyL => sTextTheme.bodyLarge;
+  // TextStyle? get body => sTextTheme.bodyMedium;
+  // TextStyle? get bodyS => sTextTheme.bodySmall;
+  // TextStyle? get labelL => sTextTheme.labelLarge;
+  // TextStyle? get label => sTextTheme.labelMedium;
+  // TextStyle? get labelS => sTextTheme.labelSmall;
 }
