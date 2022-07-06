@@ -7,10 +7,9 @@ extension SupaContext on BuildContext {
   double get sHeight => sSize.height;
 
   //SupaThemeData
-  SupaThemeData get sTheme => SupaTheme.of(this);
+  SupaThemeData get sTheme => SupaThemeData.of(this);
   //theme
-  AppController get appController => SupaChild.of(this).controller;
-  // TextTheme get sTextTheme => appController.themeData.textTheme;
+  SupaTextTheme get sTextTheme => sTheme.textTheme;
   ColorScheme get colorS => Theme.of(this).colorScheme;
 
   ///Get your [SupaHelp] its fucking awesome.
@@ -36,21 +35,27 @@ extension SupaContext on BuildContext {
   bool get smallerThanL => sWidth < ScreenSize.l.offset.dx;
   bool get smallerThanXl => sWidth < ScreenSize.xl.offset.dx;
 
+  //Supa text styles
+  TextStyle get display => sTextTheme.display;
+  TextStyle get headline => sTextTheme.headline;
+  TextStyle get title => sTextTheme.title;
+  TextStyle get body => sTextTheme.body;
+  TextStyle get label => sTextTheme.label;
   //M3 text styles
 
-  // TextStyle? get displayL => sTextTheme.displayLarge;
-  // TextStyle? get display => sTextTheme.displayMedium;
-  // TextStyle? get displayS => sTextTheme.displaySmall;
-  // TextStyle? get headlineL => sTextTheme.headlineLarge;
-  // TextStyle? get headline => sTextTheme.headlineMedium;
-  // TextStyle? get headlineS => sTextTheme.headlineSmall;
-  // TextStyle? get titleL => sTextTheme.titleLarge;
-  // TextStyle? get title => sTextTheme.titleMedium;
-  // TextStyle? get titleS => sTextTheme.titleSmall;
-  // TextStyle? get bodyL => sTextTheme.bodyLarge;
-  // TextStyle? get body => sTextTheme.bodyMedium;
-  // TextStyle? get bodyS => sTextTheme.bodySmall;
-  // TextStyle? get labelL => sTextTheme.labelLarge;
-  // TextStyle? get label => sTextTheme.labelMedium;
-  // TextStyle? get labelS => sTextTheme.labelSmall;
+  TextStyle? get mdisplayL => sTextTheme.toMaterial.displayLarge;
+  TextStyle? get mdisplay => sTextTheme.toMaterial.displayMedium;
+  TextStyle? get mdisplayS => sTextTheme.toMaterial.displaySmall;
+  TextStyle? get mheadlineL => sTextTheme.toMaterial.headlineLarge;
+  TextStyle? get mheadline => sTextTheme.toMaterial.headlineMedium;
+  TextStyle? get mheadlineS => sTextTheme.toMaterial.headlineSmall;
+  TextStyle? get mtitleL => sTextTheme.toMaterial.titleLarge;
+  TextStyle? get mtitle => sTextTheme.toMaterial.titleMedium;
+  TextStyle? get mtitleS => sTextTheme.toMaterial.titleSmall;
+  TextStyle? get mbodyL => sTextTheme.toMaterial.bodyLarge;
+  TextStyle? get mbody => sTextTheme.toMaterial.bodyMedium;
+  TextStyle? get mbodyS => sTextTheme.toMaterial.bodySmall;
+  TextStyle? get mlabelL => sTextTheme.toMaterial.labelLarge;
+  TextStyle? get mlabel => sTextTheme.toMaterial.labelMedium;
+  TextStyle? get mlabelS => sTextTheme.toMaterial.labelSmall;
 }

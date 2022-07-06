@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:supa/core/core.dart';
-import 'package:supa/supa_app/supa_theme.dart';
-import 'package:supa/supa_app/supa_theme_data.dart';
-import 'supa_child.dart';
-import 'app_controller.dart';
 
 class SupaApp extends StatefulWidget {
   ///Do not use inside MaterialApp.
@@ -17,26 +14,36 @@ class SupaApp extends StatefulWidget {
   const SupaApp({
     this.themeData,
     this.datkThemeData,
+    this.textThemeScales,
     required this.builder,
-    required this.controller,
+    this.cupertinoDarkTheme,
+    this.cupertinoThemeData,
+    this.materialDarkTheme,
+    this.materialTheme,
     this.notifyIfLifeCycleChanged = true,
+    this.notifyIfScreenSizeChanged = true,
     super.key,
   });
 
   ///builder for your [MaterialApp].
-  final Widget Function(BuildContext context) builder;
-
-  /// Your [AppController].
-  final AppController controller;
+  final Widget Function(BuildContext context, ThemeData materialTheme,
+      CupertinoThemeData cupertinoThemeData) builder;
 
   ///Set false to disable [AppLifeCycle] auto events.
   ///if[notifyIfLifeCycleChanged] is true, it will notify [AppController] when [AppLifeCycle] changes.
   ///
   ///By default it is true.
   final bool notifyIfLifeCycleChanged;
+  final bool notifyIfScreenSizeChanged;
 
   final SupaThemeData? themeData;
   final SupaThemeData? datkThemeData;
+  final TextThemeScales? textThemeScales;
+
+  final ThemeData? materialTheme;
+  final ThemeData? materialDarkTheme;
+  final CupertinoThemeData? cupertinoThemeData;
+  final CupertinoThemeData? cupertinoDarkTheme;
 
   @override
   State<SupaApp> createState() => _SupaAppState();
@@ -46,11 +53,15 @@ class _SupaAppState extends State<SupaApp> with WidgetsBindingObserver {
   Size _size = WidgetsBinding.instance.window.physicalSize;
   final _ratio = WidgetsBinding.instance.window.devicePixelRatio;
 
+  final _appController = AppController.instance;
+
+  late SupaThemeData _themeData;
+
   @override
   void initState() {
+    _themeData = widget.themeData ?? SupaThemeData.light();
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    widget.controller.addListener(() => setState(() {}));
   }
 
   @override
@@ -61,22 +72,14 @@ class _SupaAppState extends State<SupaApp> with WidgetsBindingObserver {
   }
 
   @override
-  void didChangeTextScaleFactor() {
-    widget.controller.onTextScaleChanged();
-    super.didChangeTextScaleFactor();
-  }
-
-  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    widget.controller
-        .updateLifecycleState(state, widget.notifyIfLifeCycleChanged);
+    _appController.updateLifecycleState(state, widget.notifyIfLifeCycleChanged);
     super.didChangeAppLifecycleState(state);
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    widget.controller.removeListener(() => setState(() {}));
     super.dispose();
   }
 
@@ -84,21 +87,27 @@ class _SupaAppState extends State<SupaApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: SupaTheme(
-        supaThemeData: widget.themeData ?? SupaThemeData.light(),
-        child: SupaChild(
-          controller: widget.controller,
-          child: AnimatedBuilder(
-              animation: widget.controller,
-              builder: (_, __) => widget.builder(_)),
+      child: AnimatedBuilder(
+        animation: _appController,
+        builder: (_, __) => SupaTheme(
+          supaThemeData: _themeData,
+          child:
+              widget.builder(_, _.sTheme.toMaterial(), _.sTheme.toCupertino()),
         ),
       ),
     );
   }
 
   _updateSize() {
-    if (widget.controller.ss != ScreenSize.whatsSize(_size.width * _ratio)) {
-      widget.controller.verifySizes();
+    if (_appController.help.screenSize !=
+        ScreenSize.whatsSize(_size.width * _ratio)) {
+      if (widget.notifyIfScreenSizeChanged) {
+        _themeData = _themeData.copyWith(
+            textTheme: _themeData.textTheme.screenScale(
+                _appController.help.screenSize, _themeData.base,
+                textSettings: widget.textThemeScales));
+      }
+      _appController.verifySizes(widget.notifyIfScreenSizeChanged);
     }
   }
 }

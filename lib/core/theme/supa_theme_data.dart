@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:supa/supa_app/supa_text_theme.dart';
+part of 'theme.dart';
 
 class SupaThemeData {
   final SupaColor primary;
@@ -12,8 +10,9 @@ class SupaThemeData {
   final SupaColor error;
   final bool isLight;
   final SupaTextTheme textTheme;
+  late final SupaTextTheme base;
 
-  const SupaThemeData({
+  SupaThemeData({
     this.primary =
         const SupaColor(color: Colors.pinkAccent, onColor: Colors.white),
     this.secondary =
@@ -30,7 +29,9 @@ class SupaThemeData {
         const SupaColor(color: Color(0xFFba1a1a), onColor: Colors.white),
     this.isLight = true,
     required this.textTheme,
-  });
+  }) {
+    base = textTheme;
+  }
 
   static SupaThemeData light(
           {SupaColor? primary,
@@ -43,50 +44,22 @@ class SupaThemeData {
           bool? isLight,
           SupaTextTheme? textTheme}) =>
       SupaThemeData(
-        primary: primary ??
-            const SupaColor(color: Colors.pinkAccent, onColor: Colors.white),
-        secondary: secondary ??
-            const SupaColor(color: Color(0xFFff7fac), onColor: Colors.white),
-        tertiary: tertiary ??
-            const SupaColor(color: Color(0xFFfff4f5), onColor: Colors.white),
-        background: background ??
-            const SupaColor(color: Color(0xFFfff8f8), onColor: Colors.white),
-        scaffoldBackground: scaffoldBackground ??
-            const SupaColor(color: Color(0xFFffe1e7), onColor: Colors.white),
-        container: container ??
-            const SupaColor(color: Color(0xFFffcdda), onColor: Colors.white),
-        error: error ??
-            const SupaColor(color: Color(0xFFba1a1a), onColor: Colors.white),
-        isLight: isLight ?? true,
-        textTheme: textTheme ??
-            const SupaTextTheme(
-              display: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-              ),
-              headline: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-              ),
-              title: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-              ),
-              label: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-              ),
-              body: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-              ),
-            ),
-      );
+          primary: primary ??
+              const SupaColor(color: Colors.pinkAccent, onColor: Colors.white),
+          secondary: secondary ??
+              const SupaColor(color: Color(0xFFff7fac), onColor: Colors.white),
+          tertiary: tertiary ??
+              const SupaColor(color: Color(0xFFfff4f5), onColor: Colors.white),
+          background: background ??
+              const SupaColor(color: Color(0xFFfff8f8), onColor: Colors.white),
+          scaffoldBackground: scaffoldBackground ??
+              const SupaColor(color: Color(0xFFffe1e7), onColor: Colors.white),
+          container: container ??
+              const SupaColor(color: Color(0xFFffcdda), onColor: Colors.white),
+          error: error ??
+              const SupaColor(color: Color(0xFFba1a1a), onColor: Colors.white),
+          isLight: isLight ?? true,
+          textTheme: textTheme ?? supaTextTheme);
 
   SupaThemeData copyWith({
     SupaColor? primary,
@@ -135,6 +108,13 @@ class SupaThemeData {
         onError: error.onColor,
         brightness: isLight ? Brightness.light : Brightness.dark,
       ));
+
+  static SupaThemeData of(BuildContext context) {
+    return context
+            .dependOnInheritedWidgetOfExactType<SupaTheme>()
+            ?.supaThemeData ??
+        SupaThemeData.light();
+  }
 }
 
 class SupaColor {

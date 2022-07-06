@@ -24,8 +24,10 @@ class SupaHelp {
     corner = SupaCorners.getCorner(size.width);
     radius = Radius.circular(corner);
     borderRadius = BorderRadius.circular(corner);
+    screenSize = ScreenSize.whatsSize(size.width);
   }
 
+  /// Your viewport size
   final Size size;
 
   /// Responsive [EdgeInsets.symmetric] using [horizontal].
@@ -75,6 +77,9 @@ class SupaHelp {
 
   /// Responsive [BorderRadius].
   late final BorderRadius borderRadius;
+
+  ///Screen size for the device.
+  late final ScreenSize screenSize;
 
   /// Responsive [EdgeInsets.only]
   /// use [top], [left], [bottom], [right] bools to set wich sides use.

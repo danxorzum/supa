@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:supa/core/core.dart';
-import 'supa_text_settings.dart';
 
 class AppController with ChangeNotifier {
   ///Created a controller for the app.
@@ -9,27 +8,28 @@ class AppController with ChangeNotifier {
   ///The controller automatically manage rezing of the  font app.
   ///
   ///The controller defaults only work with material 3.
-  AppController._(ScreenSize ss, double);
-
-  final AppController _controller;
-
-  factory AppController({
-    SupaTextSettings? settings,
-  }) {
-    return _AppController(settings: settings);
+  AppController._() {
+    final size = WidgetsFlutterBinding.ensureInitialized().window.physicalSize;
+    final ratio =
+        WidgetsFlutterBinding.ensureInitialized().window.devicePixelRatio;
+    _supaHelp = SupaHelp(size * ratio);
   }
 
-  late ScreenSize _ss;
-  late double _textScale;
+  //Instance of the controller.
+  static final AppController _controller = AppController._();
+
+  // factory AppController() => _controller;
+  static AppController get instance => _controller;
+
+  late SupaHelp _supaHelp;
+
   final ValueNotifier<AppLifecycleState> _state =
       ValueNotifier<AppLifecycleState>(AppLifecycleState.resumed);
   final ValueNotifier<AppLifecycleState> _lastsState =
       ValueNotifier<AppLifecycleState>(AppLifecycleState.inactive);
 
   //getters
-
-  ///The current [ScreenSize] of the app.
-  ScreenSize get ss => _ss;
+  SupaHelp get help => _supaHelp;
 
   ///Get the current [AppLifecycleState] of the app.
   AppLifecycleState get state => _state.value;
@@ -45,30 +45,16 @@ class AppController with ChangeNotifier {
   ///you can use it to listen to the state of the app.
   ValueNotifier<AppLifecycleState> get lastStateNotifier => _lastsState;
 
-  Size get physicalSize =>
-      WidgetsFlutterBinding.ensureInitialized().window.physicalSize;
-
-  ///Ff you are using [SupaApp] you don't need to call this method.
-  ///[SupaApp] will listen for you.
-  ///
-  ///Call it when the [textScaleFactor] of the app change.
-  void onTextScaleChanged() {
-    _textScale = WidgetsBinding.instance.window.textScaleFactor;
-
-    notifyListeners();
-  }
-
   ///if you are using [SupaApp] you don't need to call this method.
   ///[SupaApp] will listen for you.
   ///
   ///Do not call it out runApp.
   ///Call it when device dimensions changes.
-  void verifySizes() {
-    final width = WidgetsBinding.instance.window.physicalSize.width;
+  void verifySizes(bool canNotifyListeners) {
+    final size = WidgetsBinding.instance.window.physicalSize;
     final pRatio = WidgetsBinding.instance.window.devicePixelRatio;
-    final newSs = ScreenSize.whatsSize(width / pRatio);
-
-    notifyListeners();
+    _supaHelp = SupaHelp(size * pRatio);
+    if (canNotifyListeners) notifyListeners();
   }
 
   ///If you are using [SupaApp] you don't need to call this method.
@@ -81,5 +67,12 @@ class AppController with ChangeNotifier {
     _lastsState.value = _state.value;
     _state.value = state;
     if (canNotifyListeners) notifyListeners();
+  }
+
+  ///Updata all Listeners.
+  ///
+  ///If you are using [SupaApp] redraw the entire app.
+  void updateListeners() {
+    notifyListeners();
   }
 }
