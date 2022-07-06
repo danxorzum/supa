@@ -10,7 +10,7 @@ class SupaThemeData {
   final SupaColor error;
   final bool isLight;
   final SupaTextTheme textTheme;
-  late final SupaTextTheme base;
+  late final SupaTextTheme _base;
 
   SupaThemeData({
     this.primary =
@@ -30,7 +30,7 @@ class SupaThemeData {
     this.isLight = true,
     required this.textTheme,
   }) {
-    base = textTheme;
+    _base = textTheme;
   }
 
   static SupaThemeData light(
@@ -114,6 +114,12 @@ class SupaThemeData {
             .dependOnInheritedWidgetOfExactType<SupaTheme>()
             ?.supaThemeData ??
         SupaThemeData.light();
+  }
+
+  SupaThemeData resize(ScreenSize screenSize) {
+    return copyWith(
+      textTheme: textTheme.screenScale(screenSize, _base),
+    );
   }
 }
 

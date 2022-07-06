@@ -27,8 +27,8 @@ class SupaView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final device = context.help.device;
-    log(context.sSize.aspectRatio.toString());
+    final device = AppController.help.device;
+
 //TODO: add  OP validation
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -41,7 +41,7 @@ class SupaView extends StatelessWidget {
         DeviceOrientation.landscapeRight,
       ]
     ]);
-    switch (context.help.device) {
+    switch (device) {
       case SupaDevice.watch:
         return watch ?? portraitMobile;
       case SupaDevice.phonePortrait:

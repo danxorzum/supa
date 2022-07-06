@@ -13,7 +13,7 @@ extension SupaContext on BuildContext {
   ColorScheme get colorS => Theme.of(this).colorScheme;
 
   ///Get your [SupaHelp] its fucking awesome.
-  SupaHelp get help => SupaHelp(sSize);
+  SupaHelp get help => AppController.help;
 
 //Screen size bools
   bool get isW => ScreenSize.w.offset.isInRange(sWidth);

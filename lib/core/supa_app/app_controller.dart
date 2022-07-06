@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import 'package:supa/core/core.dart';
@@ -12,7 +14,8 @@ class AppController with ChangeNotifier {
     final size = WidgetsFlutterBinding.ensureInitialized().window.physicalSize;
     final ratio =
         WidgetsFlutterBinding.ensureInitialized().window.devicePixelRatio;
-    _supaHelp = SupaHelp(size * ratio);
+    log(Size(size.width * ratio, size.height / ratio).toString());
+    _supaHelp = SupaHelp(Size(size.width / ratio, size.height / ratio));
   }
 
   //Instance of the controller.
@@ -29,7 +32,9 @@ class AppController with ChangeNotifier {
       ValueNotifier<AppLifecycleState>(AppLifecycleState.inactive);
 
   //getters
-  SupaHelp get help => _supaHelp;
+  SupaHelp get supaHelp => _supaHelp;
+
+  static SupaHelp get help => _controller._supaHelp;
 
   ///Get the current [AppLifecycleState] of the app.
   AppLifecycleState get state => _state.value;

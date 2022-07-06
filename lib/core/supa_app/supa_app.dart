@@ -99,13 +99,10 @@ class _SupaAppState extends State<SupaApp> with WidgetsBindingObserver {
   }
 
   _updateSize() {
-    if (_appController.help.screenSize !=
+    if (_appController.supaHelp.screenSize !=
         ScreenSize.whatsSize(_size.width * _ratio)) {
       if (widget.notifyIfScreenSizeChanged) {
-        _themeData = _themeData.copyWith(
-            textTheme: _themeData.textTheme.screenScale(
-                _appController.help.screenSize, _themeData.base,
-                textSettings: widget.textThemeScales));
+        _themeData = _themeData.resize(_appController.supaHelp.screenSize);
       }
       _appController.verifySizes(widget.notifyIfScreenSizeChanged);
     }

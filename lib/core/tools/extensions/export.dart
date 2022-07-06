@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supa/core/supa_app/export.dart';
 import 'package:supa/core/theme/theme.dart';
 import 'package:supa/core/tools/screen_tools/screen_tools.dart';
 import '../../helpers/helpers.dart';
