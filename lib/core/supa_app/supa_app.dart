@@ -65,6 +65,9 @@ class _SupaAppState extends State<SupaApp> with WidgetsBindingObserver {
     }
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _appController.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -83,6 +86,7 @@ class _SupaAppState extends State<SupaApp> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _appController.dispose();
     super.dispose();
   }
 
@@ -92,21 +96,21 @@ class _SupaAppState extends State<SupaApp> with WidgetsBindingObserver {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: AnimatedBuilder(
           animation: _appController,
-          builder: (_, __) => SupaTheme(
-                data: _themeData,
-                child: Builder(
-                  builder: (context) => widget.builder(
-                      context,
-                      context.sTheme.toMaterial(),
-                      context.sTheme.toCupertino()),
-                ),
-              )),
+          builder: (_, __) {
+            return SupaTheme(
+              data: _themeData,
+              child: Builder(
+                builder: (context) => widget.builder(context,
+                    context.sTheme.toMaterial(), context.sTheme.toCupertino()),
+              ),
+            );
+          }),
     );
   }
 
   _updateSize() {
     if (_appController.supaHelp.screenSize !=
-        ScreenSize.whatsSize(_size.width * _ratio)) {
+        ScreenSize.whatsSize(_size.width / _ratio)) {
       if (widget.notifyIfScreenSizeChanged) {
         _themeData = _themeData.resize(_appController.supaHelp.screenSize);
       }

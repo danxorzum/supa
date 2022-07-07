@@ -55,7 +55,7 @@ class AppController with ChangeNotifier {
   void verifySizes(bool canNotifyListeners) {
     final size = WidgetsBinding.instance.window.physicalSize;
     final pRatio = WidgetsBinding.instance.window.devicePixelRatio;
-    _supaHelp = SupaHelp(size * pRatio);
+    _supaHelp = SupaHelp(Size(size.width / pRatio, size.height / pRatio));
     if (canNotifyListeners) notifyListeners();
   }
 

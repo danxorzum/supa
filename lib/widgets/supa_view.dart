@@ -27,7 +27,7 @@ class SupaView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final device = AppController.help.device;
+    final device = context.help.device;
 
 //TODO: add  OP validation
     SystemChrome.setPreferredOrientations([
