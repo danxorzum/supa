@@ -51,8 +51,6 @@ class SupaTextTheme {
   SupaTextTheme screenScale(ScreenSize screenSize, SupaTextTheme base,
       {TextThemeScales? textSettings}) {
     final settings = textSettings ?? TextThemeScales();
-    log(base.body.fontSize.toString());
-    log(body.fontSize.toString());
     switch (screenSize) {
       case ScreenSize.w:
         return copyWith(
@@ -148,92 +146,78 @@ class SupaTextTheme {
         bodyMedium: body,
         bodySmall: body.copyWith(fontSize: body.fontSize! * 0.8),
       );
-  //TODO: done this shit
-  CupertinoTextThemeData get toCupertino => CupertinoTextThemeData(
-        primaryColor: SupaThemeData.light().primary.color,
-        actionTextStyle: _actionTextStyle,
-        dateTimePickerTextStyle: _dateTimePickerTextStyle,
-        navActionTextStyle: _actionTextStyle,
-        navLargeTitleTextStyle: _largeTitleTextStyle,
-        navTitleTextStyle: _middleTitleTextStyle,
-        pickerTextStyle: _pickerTextStyle,
-        tabLabelTextStyle: _tabLabelTextStyle,
-        textStyle: _textStyle,
+
+  CupertinoTextThemeData toCupertino(Color color) => CupertinoTextThemeData(
+        primaryColor: color,
+        actionTextStyle: label.copyWith(
+            inherit: false,
+            fontFamily: label.fontFamily ?? '.SF Pro Text',
+            fontSize: body.fontSize ?? 16,
+            letterSpacing: -0.41,
+            color: color),
+        dateTimePickerTextStyle: title.copyWith(
+          inherit: false,
+          fontFamily: title.fontFamily ?? '.SF Pro Display',
+          fontSize: title.fontSize ?? 21,
+          fontWeight: FontWeight.normal,
+        ),
+        navActionTextStyle: label.copyWith(
+            inherit: false,
+            fontFamily: label.fontFamily ?? '.SF Pro Text',
+            fontSize: label.fontSize ?? 17.0,
+            letterSpacing: -0.41,
+            color: color),
+        navLargeTitleTextStyle: headline.copyWith(
+          inherit: false,
+          fontFamily: headline.fontFamily ?? '.SF Pro Display',
+          fontSize: headline.fontSize ?? 34.0,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0.41,
+        ),
+        navTitleTextStyle: label.copyWith(
+          inherit: false,
+          fontFamily: label.fontFamily ?? '.SF Pro Text',
+          fontSize: label.fontSize ?? 17.0,
+          fontWeight: FontWeight.w600,
+          letterSpacing: -0.41,
+        ),
+        pickerTextStyle: title.copyWith(
+          inherit: false,
+          fontFamily: title.fontFamily ?? '.SF Pro Display',
+          fontSize: title.fontSize ?? 21.0,
+          fontWeight: FontWeight.w400,
+          letterSpacing: -0.6,
+        ),
+        tabLabelTextStyle: label.copyWith(
+          inherit: false,
+          fontFamily: label.fontFamily ?? '.SF Pro Text',
+          fontSize: body.fontSize ?? 10.0,
+          fontWeight: FontWeight.w500,
+          letterSpacing: -0.24,
+        ),
+        textStyle: label.copyWith(
+          inherit: false,
+          fontFamily: label.fontFamily ?? '.SF Pro Text',
+          fontSize: label.fontSize ?? 17.0,
+          letterSpacing: -0.41,
+        ),
       );
 }
 
-const TextStyle _textStyle = TextStyle(
-  inherit: false,
-  fontFamily: '.SF Pro Text',
-  fontSize: 17.0,
-  letterSpacing: -0.41,
-  color: CupertinoColors.label,
-  decoration: TextDecoration.none,
-);
-const TextStyle _actionTextStyle = TextStyle(
-  inherit: false,
-  fontFamily: '.SF Pro Text',
-  fontSize: 17.0,
-  letterSpacing: -0.41,
-  color: CupertinoColors.activeBlue,
-  decoration: TextDecoration.none,
-);
-const TextStyle _tabLabelTextStyle = TextStyle(
-  inherit: false,
-  fontFamily: '.SF Pro Text',
-  fontSize: 10.0,
-  fontWeight: FontWeight.w500,
-  letterSpacing: -0.24,
-  color: CupertinoColors.inactiveGray,
-);
-
-const TextStyle _middleTitleTextStyle = TextStyle(
-  inherit: false,
-  fontFamily: '.SF Pro Text',
-  fontSize: 17.0,
-  fontWeight: FontWeight.w600,
-  letterSpacing: -0.41,
-  color: CupertinoColors.label,
-);
-
-const TextStyle _largeTitleTextStyle = TextStyle(
-  inherit: false,
-  fontFamily: '.SF Pro Display',
-  fontSize: 34.0,
-  fontWeight: FontWeight.w700,
-  letterSpacing: 0.41,
-  color: CupertinoColors.label,
-);
-const TextStyle _pickerTextStyle = TextStyle(
-  inherit: false,
-  fontFamily: '.SF Pro Display',
-  fontSize: 21.0,
-  fontWeight: FontWeight.w400,
-  letterSpacing: -0.6,
-  color: CupertinoColors.label,
-);
-const TextStyle _dateTimePickerTextStyle = TextStyle(
-  inherit: false,
-  fontFamily: '.SF Pro Display',
-  fontSize: 21,
-  fontWeight: FontWeight.normal,
-  color: CupertinoColors.label,
-);
-
 const supaTextTheme = SupaTextTheme(
   display: TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w500,
-    color: Colors.black,
+    fontSize: 53,
+    fontWeight: FontWeight.w600,
+    color: Colors.pinkAccent,
   ),
   headline: TextStyle(
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: FontWeight.w500,
     color: Colors.black,
   ),
   title: TextStyle(
-    fontSize: 20,
-    fontWeight: FontWeight.w500,
+    fontSize: 22,
+    fontWeight: FontWeight.w600,
     color: Colors.black,
   ),
   label: TextStyle(
@@ -243,7 +227,7 @@ const supaTextTheme = SupaTextTheme(
   ),
   body: TextStyle(
     fontSize: 14,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w400,
     color: Colors.black,
   ),
 );

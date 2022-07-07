@@ -9,8 +9,9 @@ class SupaThemeData {
   final SupaColor container;
   final SupaColor error;
   final bool isLight;
+  final bool enableScale;
   final SupaTextTheme textTheme;
-  late final SupaTextTheme _base;
+  late SupaTextTheme _base;
 
   SupaThemeData({
     this.primary =
@@ -28,6 +29,7 @@ class SupaThemeData {
     this.error =
         const SupaColor(color: Color(0xFFba1a1a), onColor: Colors.white),
     this.isLight = true,
+    this.enableScale = true,
     required this.textTheme,
   }) {
     _base = textTheme;
@@ -70,6 +72,7 @@ class SupaThemeData {
     SupaColor? container,
     SupaColor? error,
     bool? isLight,
+    bool? enableScale,
     SupaTextTheme? textTheme,
   }) {
     return SupaThemeData(
@@ -82,16 +85,17 @@ class SupaThemeData {
       error: error ?? this.error,
       isLight: isLight ?? this.isLight,
       textTheme: textTheme ?? this.textTheme,
+      enableScale: enableScale ?? this.enableScale,
     );
   }
 
   CupertinoThemeData toCupertino() => CupertinoThemeData(
-        barBackgroundColor: background.color,
-        primaryColor: primary.color,
-        primaryContrastingColor: primary.onColor,
-        scaffoldBackgroundColor: scaffoldBackground.color,
-        brightness: isLight ? Brightness.light : Brightness.dark,
-      );
+      barBackgroundColor: background.color,
+      primaryColor: primary.color,
+      primaryContrastingColor: primary.onColor,
+      scaffoldBackgroundColor: scaffoldBackground.color,
+      brightness: isLight ? Brightness.light : Brightness.dark,
+      textTheme: textTheme.toCupertino(primary.color));
   ThemeData toMaterial() => ThemeData.from(
           colorScheme: ColorScheme.light(
         primary: primary.color,
@@ -110,16 +114,17 @@ class SupaThemeData {
       ));
 
   static SupaThemeData of(BuildContext context) {
-    return context
-            .dependOnInheritedWidgetOfExactType<SupaTheme>()
-            ?.supaThemeData ??
-        SupaThemeData.light();
+    final theme = context.dependOnInheritedWidgetOfExactType<SupaTheme>()?.data;
+    assert(theme != null);
+    return theme!;
   }
 
   SupaThemeData resize(ScreenSize screenSize) {
-    return copyWith(
+    final copy = copyWith(
       textTheme: textTheme.screenScale(screenSize, _base),
     );
+    copy._base = _base;
+    return copy;
   }
 }
 

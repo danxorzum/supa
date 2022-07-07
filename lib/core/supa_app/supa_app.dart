@@ -60,6 +60,9 @@ class _SupaAppState extends State<SupaApp> with WidgetsBindingObserver {
   @override
   void initState() {
     _themeData = widget.themeData ?? SupaThemeData.light();
+    if (widget.notifyIfScreenSizeChanged) {
+      _themeData = _themeData.resize(_appController.supaHelp.screenSize);
+    }
     super.initState();
     WidgetsBinding.instance.addObserver(this);
   }
@@ -88,13 +91,16 @@ class _SupaAppState extends State<SupaApp> with WidgetsBindingObserver {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: AnimatedBuilder(
-        animation: _appController,
-        builder: (_, __) => SupaTheme(
-          supaThemeData: _themeData,
-          child:
-              widget.builder(_, _.sTheme.toMaterial(), _.sTheme.toCupertino()),
-        ),
-      ),
+          animation: _appController,
+          builder: (_, __) => SupaTheme(
+                data: _themeData,
+                child: Builder(
+                  builder: (context) => widget.builder(
+                      context,
+                      context.sTheme.toMaterial(),
+                      context.sTheme.toCupertino()),
+                ),
+              )),
     );
   }
 

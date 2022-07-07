@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 import 'package:supa/core/core.dart';
@@ -14,7 +12,6 @@ class AppController with ChangeNotifier {
     final size = WidgetsFlutterBinding.ensureInitialized().window.physicalSize;
     final ratio =
         WidgetsFlutterBinding.ensureInitialized().window.devicePixelRatio;
-    log(Size(size.width * ratio, size.height / ratio).toString());
     _supaHelp = SupaHelp(Size(size.width / ratio, size.height / ratio));
   }
 
