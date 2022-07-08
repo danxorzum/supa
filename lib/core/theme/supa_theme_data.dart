@@ -96,8 +96,8 @@ class SupaThemeData {
       scaffoldBackgroundColor: scaffoldBackground.color,
       brightness: isLight ? Brightness.light : Brightness.dark,
       textTheme: textTheme.toCupertino(primary.color));
-  ThemeData toMaterial() => ThemeData.from(
-          colorScheme: ColorScheme.light(
+  ThemeData toMaterial({bool useMaterial3 = true}) => ThemeData.from(
+      colorScheme: ColorScheme.light(
         primary: primary.color,
         onPrimary: primary.onColor,
         secondary: secondary.color,
@@ -111,7 +111,8 @@ class SupaThemeData {
         error: error.color,
         onError: error.onColor,
         brightness: isLight ? Brightness.light : Brightness.dark,
-      ));
+      ),
+      useMaterial3: useMaterial3);
 
   static SupaThemeData of(BuildContext context) {
     final theme = context.dependOnInheritedWidgetOfExactType<SupaTheme>()?.data;

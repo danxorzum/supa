@@ -1,6 +1,6 @@
 part of 'supa_widgets.dart';
 
-class SupaView extends StatelessWidget {
+class SupaView extends StatefulWidget {
   const SupaView({
     this.watch,
     this.landscapeMobile,
@@ -22,8 +22,24 @@ class SupaView extends StatelessWidget {
   final Widget? landscapeDesktop;
   final Widget? portraitDesktop;
 
+  @override
+  State<SupaView> createState() => _SupaViewState();
+}
+
+class _SupaViewState extends State<SupaView> {
   // final bool canPortraitDown;
-  // final bool canLanscapeLeft;
+
+  @override
+  void initState() {
+    super.initState();
+    AppController.instance.addListener(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    AppController.instance.removeListener(() => setState(() {}));
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +50,8 @@ class SupaView extends StatelessWidget {
       DeviceOrientation.portraitUp,
       // if (canPortraitDown) DeviceOrientation.portraitDown,
       if (device != SupaDevice.watch &&
-              (device.isPhone && landscapeMobile != null) ||
-          (device.isTablet && landscapeTablet != null) ||
+              (device.isPhone && widget.landscapeMobile != null) ||
+          (device.isTablet && widget.landscapeTablet != null) ||
           device == SupaDevice.desktop) ...[
         DeviceOrientation.landscapeLeft,
         DeviceOrientation.landscapeRight,
@@ -43,20 +59,22 @@ class SupaView extends StatelessWidget {
     ]);
     switch (device) {
       case SupaDevice.watch:
-        return watch ?? portraitMobile;
+        return widget.watch ?? widget.portraitMobile;
       case SupaDevice.phonePortrait:
-        return portraitMobile;
+        return widget.portraitMobile;
       case SupaDevice.phoneLandscape:
-        return landscapeMobile ?? portraitMobile;
+        return widget.landscapeMobile ?? widget.portraitMobile;
       case SupaDevice.tabletPortrait:
-        return portraitTablet ?? portraitMobile;
+        return widget.portraitTablet ?? widget.portraitMobile;
       case SupaDevice.tabletLandscape:
-        return landscapeTablet ?? portraitTablet ?? portraitMobile;
+        return widget.landscapeTablet ??
+            widget.portraitTablet ??
+            widget.portraitMobile;
       case SupaDevice.desktop:
-        return landscapeDesktop ??
-            portraitDesktop ??
-            landscapeTablet ??
-            portraitMobile;
+        return widget.landscapeDesktop ??
+            widget.portraitDesktop ??
+            widget.landscapeTablet ??
+            widget.portraitMobile;
     }
   }
 }

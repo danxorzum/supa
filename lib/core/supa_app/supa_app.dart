@@ -65,9 +65,6 @@ class _SupaAppState extends State<SupaApp> with WidgetsBindingObserver {
     }
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _appController.addListener(() {
-      setState(() {});
-    });
   }
 
   @override

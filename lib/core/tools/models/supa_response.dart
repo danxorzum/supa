@@ -16,7 +16,7 @@ class SupaResponse<T> {
 
   //Getters
   bool get isSuccess => error == null;
-  bool get isError => error != null;
+  bool get hasError => error != null;
   bool get hasPaginator => paginator != null;
 
   SupaResponse({this.data, this.error, this.paginator, this.token}) {
