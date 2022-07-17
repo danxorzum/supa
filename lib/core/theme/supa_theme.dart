@@ -7,7 +7,9 @@ class SupaTheme extends InheritedTheme {
   final SupaThemeData data;
 
   @override
-  bool updateShouldNotify(SupaTheme oldWidget) => false;
+  bool updateShouldNotify(SupaTheme oldWidget) {
+    return data != oldWidget.data;
+  }
 
   @override
   Widget wrap(BuildContext context, Widget child) {
