@@ -98,8 +98,10 @@ class _SupaAppExtensionState extends State<SupaAppExtension>
             return SupaTheme(
               data: _themeData,
               child: Builder(
-                builder: (context) => widget.builder(context,
-                    context.sTheme.toMaterial(), context.sTheme.toCupertino()),
+                builder: (context) => widget.builder(
+                    context,
+                    context.sTheme.toMaterial(theme: widget.materialTheme),
+                    context.sTheme.toCupertino()),
               ),
             );
           }),

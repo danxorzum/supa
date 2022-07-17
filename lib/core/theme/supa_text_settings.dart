@@ -15,7 +15,7 @@ class TextThemeScales {
   TextThemeScales(
       {this.wScale = 0.75,
       this.xsScale = 0.9,
-      this.sBigScale = 0.95,
+      this.sScale = 1,
       this.mScale = 1.05,
       this.lScale = 1.15,
       this.xlScale = 1.2});
@@ -30,7 +30,7 @@ class TextThemeScales {
 
   ///Second scale for extra small devices.
   ///By default is 0.75
-  final double sBigScale;
+  final double sScale;
 
   ///Scale for medium devices.
   ///By default is 1.05
