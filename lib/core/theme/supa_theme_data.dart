@@ -96,23 +96,27 @@ class SupaThemeData {
       scaffoldBackgroundColor: scaffoldBackground.color,
       brightness: isLight ? Brightness.light : Brightness.dark,
       textTheme: textTheme.toCupertino(primary.color));
-  ThemeData toMaterial({bool useMaterial3 = true}) => ThemeData.from(
-      colorScheme: ColorScheme.light(
-        primary: primary.color,
-        onPrimary: primary.onColor,
-        secondary: secondary.color,
-        onSecondary: secondary.onColor,
-        tertiary: tertiary.color,
-        onTertiary: tertiary.onColor,
-        surface: background.color,
-        onSurface: background.onColor,
-        background: background.color,
-        onBackground: background.onColor,
-        error: error.color,
-        onError: error.onColor,
-        brightness: isLight ? Brightness.light : Brightness.dark,
-      ),
-      useMaterial3: useMaterial3);
+  ThemeData toMaterial({bool useMaterial3 = true, ThemeData? theme}) => theme !=
+          null
+      ? theme.copyWith(textTheme: theme.textTheme.merge(textTheme.toMaterial))
+      : ThemeData.from(
+          colorScheme: ColorScheme.light(
+            primary: primary.color,
+            onPrimary: primary.onColor,
+            secondary: secondary.color,
+            onSecondary: secondary.onColor,
+            tertiary: tertiary.color,
+            onTertiary: tertiary.onColor,
+            surface: background.color,
+            onSurface: background.onColor,
+            background: background.color,
+            onBackground: background.onColor,
+            error: error.color,
+            onError: error.onColor,
+            brightness: isLight ? Brightness.light : Brightness.dark,
+          ),
+          textTheme: textTheme.toMaterial,
+          useMaterial3: useMaterial3);
 
   static SupaThemeData of(BuildContext context) {
     final theme = context.dependOnInheritedWidgetOfExactType<SupaTheme>()?.data;

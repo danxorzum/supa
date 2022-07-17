@@ -47,8 +47,8 @@ class AppController with ChangeNotifier {
   ///you can use it to listen to the state of the app.
   ValueNotifier<AppLifecycleState> get lastStateNotifier => _lastsState;
 
-  ///if you are using [SupaApp] you don't need to call this method.
-  ///[SupaApp] will listen for you.
+  ///if you are using [SupaAppExtension] you don't need to call this method.
+  ///[SupaAppExtension] will listen for you.
   ///
   ///Do not call it out runApp.
   ///Call it when device dimensions changes.
@@ -59,9 +59,9 @@ class AppController with ChangeNotifier {
     if (canNotifyListeners) notifyListeners();
   }
 
-  ///If you are using [SupaApp] you don't need to call this method.
-  ///[SupaApp] will listend [AppLifecycleState] changes.
-  ///By default [SupaApp] set[canNotifyListeners] to true.
+  ///If you are using [SupaAppExtension] you don't need to call this method.
+  ///[SupaAppExtension] will listend [AppLifecycleState] changes.
+  ///By default [SupaAppExtension] set[canNotifyListeners] to true.
   ///
   ///Call it when the [AppLifecycleState] of the app change.
   ///you can decide if notifyListeners() or not whit [canNotifyListeners].
@@ -73,7 +73,7 @@ class AppController with ChangeNotifier {
 
   ///Updata all Listeners.
   ///
-  ///If you are using [SupaApp] redraw the entire app.
+  ///If you are using [SupaAppExtension] redraw the entire app.
   void updateListeners() {
     notifyListeners();
   }

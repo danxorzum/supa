@@ -79,15 +79,14 @@ class SupaTextTheme {
       case ScreenSize.s:
         return copyWith(
           display: display.copyWith(
-              fontSize: settings.sBigScale * base.display.fontSize!),
+              fontSize: settings.sScale * base.display.fontSize!),
           headline: headline.copyWith(
-              fontSize: settings.sBigScale * base.headline.fontSize!),
-          title: title.copyWith(
-              fontSize: settings.sBigScale * base.title.fontSize!),
-          label: label.copyWith(
-              fontSize: settings.sBigScale * base.label.fontSize!),
-          body:
-              body.copyWith(fontSize: settings.sBigScale * base.body.fontSize!),
+              fontSize: settings.sScale * base.headline.fontSize!),
+          title:
+              title.copyWith(fontSize: settings.sScale * base.title.fontSize!),
+          label:
+              label.copyWith(fontSize: settings.sScale * base.label.fontSize!),
+          body: body.copyWith(fontSize: settings.sScale * base.body.fontSize!),
         );
 
       case ScreenSize.m:
