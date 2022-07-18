@@ -60,7 +60,10 @@ class _SupaAppExtensionState extends State<SupaAppExtension>
 
   @override
   void initState() {
-    _themeData = widget.themeData ?? SupaThemeData.light();
+    _themeData = widget.themeData ??
+        (widget.materialTheme != null
+            ? SupaThemeData.fromMaterial(widget.materialTheme!)
+            : SupaThemeData.light());
     if (widget.notifyIfScreenSizeChanged) {
       _themeData = _themeData.resize(_appController.supaHelp.screenSize);
     }

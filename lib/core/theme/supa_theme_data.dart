@@ -35,6 +35,30 @@ class SupaThemeData {
     _base = textTheme;
   }
 
+  static SupaThemeData fromMaterial(ThemeData theme) => SupaThemeData(
+        textTheme: SupaTextTheme.fromMaterial(theme.textTheme),
+        primary: SupaColor(
+            color: theme.colorScheme.primary,
+            onColor: theme.colorScheme.onPrimary),
+        secondary: SupaColor(
+            color: theme.colorScheme.secondary,
+            onColor: theme.colorScheme.onSecondary),
+        tertiary: SupaColor(
+            color: theme.colorScheme.tertiary,
+            onColor: theme.colorScheme.onTertiary),
+        background: SupaColor(
+            color: theme.colorScheme.background,
+            onColor: theme.colorScheme.onBackground),
+        scaffoldBackground: SupaColor(
+            color: theme.colorScheme.background,
+            onColor: theme.colorScheme.onBackground),
+        container: SupaColor(
+            color: theme.colorScheme.surface,
+            onColor: theme.colorScheme.onSurface),
+        error: SupaColor(
+            color: theme.colorScheme.error, onColor: theme.colorScheme.onError),
+      );
+
   static SupaThemeData light(
           {SupaColor? primary,
           SupaColor? secondary,
