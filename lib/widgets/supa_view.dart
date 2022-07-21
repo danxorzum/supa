@@ -32,12 +32,18 @@ class _SupaViewState extends State<SupaView> {
   @override
   void initState() {
     super.initState();
-    AppController.instance.addListener(() => setState(() {}));
+    AppController.instance.addListener(() =>
+        AppController.instance.state == AppLifecycleState.resumed
+            ? setState(() {})
+            : null);
   }
 
   @override
   void dispose() {
-    AppController.instance.removeListener(() => setState(() {}));
+    AppController.instance.removeListener(() =>
+        AppController.instance.state == AppLifecycleState.resumed
+            ? setState(() {})
+            : null);
     super.dispose();
   }
 
