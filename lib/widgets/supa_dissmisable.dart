@@ -51,7 +51,7 @@ class _SupaDissmisableState extends State<SupaDissmisable>
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 0.1),
-          child: Overlay(
+          child: Container(
             child: Container(
               height: double.infinity,
               color: colorS.error,
