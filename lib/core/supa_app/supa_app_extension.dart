@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 
 import 'package:supa/core/core.dart';
 
@@ -60,6 +61,18 @@ class _SupaAppExtensionState extends State<SupaAppExtension>
 
   @override
   void initState() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+    super.initState();
+    _appController.init(SupaOrientation(
+      portraitUp: true,
+      portraitDown: true,
+      landscape: true,
+    ));
     _themeData = widget.themeData ??
         (widget.materialTheme != null
             ? SupaThemeData.fromMaterial(widget.materialTheme!)
@@ -67,7 +80,6 @@ class _SupaAppExtensionState extends State<SupaAppExtension>
     if (widget.notifyIfScreenSizeChanged) {
       _themeData = _themeData.resize(_appController.supaHelp.screenSize);
     }
-    super.initState();
     WidgetsBinding.instance.addObserver(this);
   }
 

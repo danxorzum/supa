@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:supa/supa.dart';
 
 import '../extensions/export.dart';
 
@@ -61,23 +65,36 @@ enum SupaDevice {
   final Size maxSize;
 
   const SupaDevice(this.maxSize);
-  static SupaDevice getDevice(Size size) {
-    if (size.biggerThan(SupaDevice.watch.maxSize)) return SupaDevice.watch;
-    if (size.biggerThan(SupaDevice.phonePortrait.maxSize)) {
+  static SupaDevice getDeviceFromSize(Size size) {
+    if (size.smallerThan(SupaDevice.watch.maxSize)) return SupaDevice.watch;
+    if (size.smallerThan(SupaDevice.phonePortrait.maxSize)) {
       return SupaDevice.phonePortrait;
     }
-    if (size.biggerThan(SupaDevice.phoneLandscape.maxSize)) {
+    if (size.smallerThan(SupaDevice.phoneLandscape.maxSize)) {
       return SupaDevice.phoneLandscape;
     }
-    if (size.biggerThan(SupaDevice.tabletPortrait.maxSize) &&
+    if (size.smallerThan(SupaDevice.tabletPortrait.maxSize) &&
         size.aspectRatio < 1) {
       return SupaDevice.tabletPortrait;
     }
-    if (size.biggerThan(SupaDevice.tabletLandscape.maxSize) &&
-        size.aspectRatio > 1) {
-      return SupaDevice.tabletLandscape;
-    }
+
     return SupaDevice.desktop;
+  }
+
+  static SupaDevice getDevice(Size size) {
+    if (Platform.isWindows || Platform.isMacOS || Platform.isLinux || kIsWeb) {
+      return SupaDevice.desktop;
+    }
+    if (size.smallerThan(SupaDevice.watch.maxSize)) return SupaDevice.watch;
+    if (size.smallerThan(SupaDevice.phonePortrait.maxSize)) {
+      return SupaDevice.phonePortrait;
+    }
+    if (size.smallerThan(SupaDevice.phoneLandscape.maxSize)) {
+      return SupaDevice.phoneLandscape;
+    }
+    if (size.smallerThan(SupaDevice.tabletPortrait.maxSize) &&
+        size.aspectRatio < 1) return SupaDevice.tabletPortrait;
+    return SupaDevice.tabletLandscape;
   }
 
   bool get isPhone =>

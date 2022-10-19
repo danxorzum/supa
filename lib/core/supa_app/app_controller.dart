@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:supa/core/core.dart';
 
@@ -28,8 +31,15 @@ class AppController with ChangeNotifier {
   final ValueNotifier<AppLifecycleState> _lastsState =
       ValueNotifier<AppLifecycleState>(AppLifecycleState.inactive);
 
+  bool _areControllerInitialized = false;
+
+  late SupaOrientation _currentOrientation;
+
   //getters
   SupaHelp get supaHelp => _supaHelp;
+
+  ///Get the currents [SupaOrientation]of the app.
+  SupaOrientation get currentOrientation => _currentOrientation;
 
   static SupaHelp get help => _controller._supaHelp;
 
@@ -46,6 +56,13 @@ class AppController with ChangeNotifier {
   ///Get the last [AppLifecycleState] in a value notifier.
   ///you can use it to listen to the state of the app.
   ValueNotifier<AppLifecycleState> get lastStateNotifier => _lastsState;
+
+  bool get areControllerInitialized => _areControllerInitialized;
+
+  void init(SupaOrientation orientation) {
+    _currentOrientation = orientation;
+    _areControllerInitialized = true;
+  }
 
   ///if you are using [SupaAppExtension] you don't need to call this method.
   ///[SupaAppExtension] will listen for you.
@@ -77,4 +94,20 @@ class AppController with ChangeNotifier {
   void updateListeners() {
     notifyListeners();
   }
+
+  ///Call it when the [DeviceOrientation] of the app change.
+  ///SupaView will handle it for you.
+  ///Do not use almost you are sure of what you are doing.
+  void setNewOrientation({required SupaOrientation orientation}) {
+    log('nueva orientacio');
+    if (_currentOrientation.compareOrientation(orientation)) return;
+    _currentOrientation = orientation;
+  }
+
+  // void _updateOrientation() {
+  //   final currentSO = _currentOrientation!.getOrientation(_supaHelp.device);
+  //   log('cambiamos a: ${currentSO.orientations.toString()}');
+  //   if (currentSO == null) return;
+  //   SystemChrome.setPreferredOrientations(currentSO.orientations);
+  // }
 }

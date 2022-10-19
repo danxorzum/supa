@@ -6,11 +6,11 @@ extension OfftedExtension on Offset {
 }
 
 extension SizeExtension on Size {
-  /// Returns true if  [value] is under [width] and [height].
+  /// Returns true if  [value] is under [width] and [height] or equal.
   bool smallerThan(Size value) =>
-      value.width < width && value.height < height ? true : false;
+      width <= value.width && height <= value.height ? true : false;
 
   /// Returns true if  [value] is over [width] and [height].
   bool biggerThan(Size value) =>
-      value.width >= width && value.height >= height ? true : false;
+      width >= value.width && height >= value.height ? true : false;
 }

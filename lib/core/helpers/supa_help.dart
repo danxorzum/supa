@@ -26,6 +26,7 @@ class SupaHelp {
     borderRadius = BorderRadius.circular(corner);
     screenSize = ScreenSize.whatsSize(size.width);
     device = SupaDevice.getDevice(size);
+    screenDevice = SupaDevice.getDeviceFromSize(size);
   }
 
   /// Your viewport size
@@ -82,7 +83,11 @@ class SupaHelp {
   ///Screen size for the device.
   late final ScreenSize screenSize;
 
+  /// current device taking the OS and the orientation.
   late final SupaDevice device;
+
+  /// Current relative device based on the [size] ignoring the OS.
+  late final SupaDevice screenDevice;
 
   /// Responsive [EdgeInsets.only]
   /// use [top], [left], [bottom], [right] bools to set wich sides use.
