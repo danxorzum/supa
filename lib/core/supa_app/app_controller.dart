@@ -99,7 +99,7 @@ class AppController with ChangeNotifier {
   ///SupaView will handle it for you.
   ///Do not use almost you are sure of what you are doing.
   void setNewOrientation({required SupaOrientation orientation}) {
-    log('nueva orientacio');
+    log('nueva orientacio: \n ${orientation.orientations}');
     if (_currentOrientation.compareOrientation(orientation)) return;
     _currentOrientation = orientation;
   }

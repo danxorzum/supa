@@ -29,6 +29,7 @@ class _SupaViewState extends State<SupaSingleView> {
   @override
   void initState() {
     super.initState();
+
     AppController.instance.addListener(_listen);
 
     final controller = AppController.instance;
@@ -44,12 +45,10 @@ class _SupaViewState extends State<SupaSingleView> {
 
   @override
   void dispose() {
+    SystemChrome.setPreferredOrientations(_previusOrientation.orientations);
+    AppController.instance.setNewOrientation(orientation: _previusOrientation);
     AppController.instance.removeListener(_listen);
-    if (AppController.help.device != SupaDevice.desktop) {
-      SystemChrome.setPreferredOrientations(_previusOrientation.orientations);
-      AppController.instance
-          .setNewOrientation(orientation: _previusOrientation);
-    }
+
     super.dispose();
   }
 

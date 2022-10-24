@@ -49,20 +49,25 @@ class _SupaSingleViewState extends State<SupaView> {
     AppController.instance.addListener(_listen);
     final device = AppController.help.device;
     final controller = AppController.instance;
+    //call future inside initState
 
-    if (device != SupaDevice.desktop) {
-      final ori = SupaOrientation(
-        portraitUp: ((device.isPhone && widget.portraitMobile != null) ||
-            (device.isTablet && widget.portraitTablet != null)),
-        portraitDown: ((device.isPhone && widget.portraitMobile != null) ||
-                (device.isTablet && widget.portraitTablet != null)) &&
-            widget.canPortraitDown,
-        landscape: ((device.isPhone && widget.landscapeMobile != null) ||
-            (device.isTablet && widget.landscapeTablet != null)),
-      );
-      SystemChrome.setPreferredOrientations(ori.orientations);
-      controller.setNewOrientation(orientation: ori);
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) async =>
+        await Future.delayed(SupaDuration.halfSecond, () {
+          if (device != SupaDevice.desktop) {
+            final ori = SupaOrientation(
+              portraitUp: ((device.isPhone && widget.portraitMobile != null) ||
+                  (device.isTablet && widget.portraitTablet != null)),
+              portraitDown:
+                  ((device.isPhone && widget.portraitMobile != null) ||
+                          (device.isTablet && widget.portraitTablet != null)) &&
+                      widget.canPortraitDown,
+              landscape: ((device.isPhone && widget.landscapeMobile != null) ||
+                  (device.isTablet && widget.landscapeTablet != null)),
+            );
+            SystemChrome.setPreferredOrientations(ori.orientations);
+            controller.setNewOrientation(orientation: ori);
+          }
+        }));
   }
 
   @override
@@ -99,9 +104,11 @@ class _SupaSingleViewState extends State<SupaView> {
             const _ErrorWidget(name: 'Phone Landscape');
       case SupaDevice.tabletPortrait:
         return widget.portraitTablet ??
+            widget.landscapeTablet ??
             const _ErrorWidget(name: 'Tablet Portrait');
       case SupaDevice.tabletLandscape:
         return widget.landscapeTablet ??
+            widget.portraitTablet ??
             const _ErrorWidget(name: 'Tablet Landscape');
       case SupaDevice.desktop:
         {
