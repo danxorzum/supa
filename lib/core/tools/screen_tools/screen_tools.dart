@@ -1,25 +1,32 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:supa/supa.dart';
 
 import '../extensions/export.dart';
 
 /// Diferent sizes for the app
 enum ScreenSize {
+  /// Watch screen size
+  w(Offset(0, 300)),
+
   /// Extra small
-  xs(offset: Offset(0, 360)),
+  xs(Offset(300, 360)),
 
   /// Small
-  s(offset: Offset(361, 768)),
+  s(Offset(361, 599)),
 
   /// Medium
-  m(offset: Offset(769, 1024)),
+  m(Offset(600, 1024)),
 
   /// Large
-  l(offset: Offset(1025, 1200)),
+  l(Offset(1025, 1200)),
 
   /// Extra large
-  xl(offset: Offset(1201, double.infinity));
+  xl(Offset(1201, double.infinity));
 
-  const ScreenSize({required this.offset});
+  const ScreenSize(this.offset);
 
   /// Offset for the screen size
   final Offset offset;
@@ -34,4 +41,64 @@ enum ScreenSize {
 
     throw Exception('No screen size found for width: $width');
   }
+}
+
+enum SupaDevice {
+  /// Dimensions for watch
+  watch(Size(300, 300)),
+
+  /// Dimensions for the phone on portrait mode
+  phonePortrait(Size(599, 900)),
+
+  /// Dimensions for the phone on landscape mode
+  phoneLandscape(Size(900, 599)),
+
+  /// Dimensions for the tablet on portrait mode
+  tabletPortrait(Size(1280, 1366)),
+
+  /// Dimensions for the tablet on landscape mode
+  tabletLandscape(Size(1366, 1280)),
+
+  /// Dimensions for the desktop
+  desktop(Size(double.infinity, double.infinity));
+
+  final Size maxSize;
+
+  const SupaDevice(this.maxSize);
+  static SupaDevice getDeviceFromSize(Size size) {
+    if (size.smallerThan(SupaDevice.watch.maxSize)) return SupaDevice.watch;
+    if (size.smallerThan(SupaDevice.phonePortrait.maxSize)) {
+      return SupaDevice.phonePortrait;
+    }
+    if (size.smallerThan(SupaDevice.phoneLandscape.maxSize)) {
+      return SupaDevice.phoneLandscape;
+    }
+    if (size.smallerThan(SupaDevice.tabletPortrait.maxSize) &&
+        size.aspectRatio < 1) {
+      return SupaDevice.tabletPortrait;
+    }
+
+    return SupaDevice.desktop;
+  }
+
+  static SupaDevice getDevice(Size size) {
+    if (Platform.isWindows || Platform.isMacOS || Platform.isLinux || kIsWeb) {
+      return SupaDevice.desktop;
+    }
+    if (size.smallerThan(SupaDevice.watch.maxSize)) return SupaDevice.watch;
+    if (size.smallerThan(SupaDevice.phonePortrait.maxSize)) {
+      return SupaDevice.phonePortrait;
+    }
+    if (size.smallerThan(SupaDevice.phoneLandscape.maxSize)) {
+      return SupaDevice.phoneLandscape;
+    }
+    if (size.smallerThan(SupaDevice.tabletPortrait.maxSize) &&
+        size.aspectRatio < 1) return SupaDevice.tabletPortrait;
+    return SupaDevice.tabletLandscape;
+  }
+
+  bool get isPhone =>
+      this == SupaDevice.phonePortrait || this == SupaDevice.phoneLandscape;
+  bool get isTablet =>
+      this == SupaDevice.tabletPortrait || this == SupaDevice.tabletLandscape;
 }

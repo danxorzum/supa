@@ -33,7 +33,7 @@ class _SupaDebouncingFieldState extends State<SupaDebouncingField> {
 
   void _callback() {
     if (_timer?.isActive ?? false) _timer?.cancel();
-    _timer = Timer(widget.duration ?? SupaDuration.halfSecond, () {
+    _timer = Timer(_duration, () {
       if (_controller.text != _lastValue) {
         _lastValue = _controller.text;
         widget.callback(_controller.text);

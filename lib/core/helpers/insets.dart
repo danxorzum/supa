@@ -4,6 +4,7 @@ class SupaInsets {
   static double scale = 1;
   static double offsetScale = 1;
   // Regular paddings
+  static double get w => 5 * scale;
   static double get xs => 10 * scale;
   static double get sm => 20 * scale;
   static double get med => 25 * scale;
@@ -15,6 +16,8 @@ class SupaInsets {
   ///Get the right instets value for you screen size
   static double getInsetValue(double width) {
     switch (ScreenSize.whatsSize(width)) {
+      case ScreenSize.w:
+        return w;
       case ScreenSize.xs:
         return xs;
       case ScreenSize.s:
@@ -25,14 +28,14 @@ class SupaInsets {
         return lg;
       case ScreenSize.xl:
         return xl;
-      default:
-        return 0;
     }
   }
 
   ///Get horizontal [EdgeInsets] based on [width]
   static EdgeInsets horizontal(double width) {
     switch (ScreenSize.whatsSize(width)) {
+      case ScreenSize.w:
+        return EdgeInsets.symmetric(horizontal: w);
       case ScreenSize.xs:
         return EdgeInsets.symmetric(horizontal: xs);
       case ScreenSize.s:
@@ -49,6 +52,8 @@ class SupaInsets {
   ///Get vertical [EdgeInsets] based on [width]
   static EdgeInsets vertical(double width) {
     switch (ScreenSize.whatsSize(width)) {
+      case ScreenSize.w:
+        return EdgeInsets.symmetric(vertical: w);
       case ScreenSize.xs:
         return EdgeInsets.symmetric(vertical: xs);
       case ScreenSize.s:
@@ -65,6 +70,8 @@ class SupaInsets {
   ///Get all [EdgeInsets] based on [width]
   static EdgeInsets all(double width, {bool isSmall = false}) {
     switch (ScreenSize.whatsSize(width)) {
+      case ScreenSize.w:
+        return EdgeInsets.all(isSmall ? w / 2 : w);
       case ScreenSize.xs:
         return EdgeInsets.all(isSmall ? xs / 2 : xs);
       case ScreenSize.s:
@@ -85,6 +92,12 @@ class SupaInsets {
       bool left = true,
       bool rigth = false}) {
     switch (ScreenSize.whatsSize(width)) {
+      case ScreenSize.w:
+        return EdgeInsets.only(
+            top: top ? w : 0,
+            bottom: bottom ? w : 0,
+            left: left ? w : 0,
+            right: rigth ? w : 0);
       case ScreenSize.xs:
         return EdgeInsets.only(
             top: top ? xs : 0.0,
