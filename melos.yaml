@@ -1,0 +1,9 @@
+name: supa
+
+packages:
+  - .
+
+scripts:
+  get:
+    exec: flutter pub get
+    description: Run get packages

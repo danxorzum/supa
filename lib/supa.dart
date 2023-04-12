@@ -1,7 +1,4 @@
+/// A Very Good Project created by Very Good CLI.
 library supa;
 
-export 'package:supa/widgets/supa_widgets.dart';
-export 'core/core.dart';
-
-//modules
-
+export 'src/supa.dart';
