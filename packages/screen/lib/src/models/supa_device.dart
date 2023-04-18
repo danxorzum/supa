@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+export 'package:flutter/services.dart' show DeviceOrientation;
 
 /// Diferent sizes for the app
 const _w = 300;
@@ -78,6 +79,15 @@ enum OS {
 /// Don't use this class directly, almost you won't use Supa.
 class SupaDevice {
   ///{@macro supa_device}
+  const SupaDevice({
+    required this.screenType,
+    required this.orientation,
+    required this.device,
+    required this.deviceOS,
+    required this.screenSize,
+  });
+
+  ///{@macro supa_device}
   /// Creates a new instance of [SupaDevice].
   /// Receives the [Size] [ScreenSize], [DeviceOrientation], [Device] and [OS].
   /// Important the [Size] has to be in Dp.
@@ -96,15 +106,6 @@ class SupaDevice {
       screenSize: size,
     );
   }
-
-  ///{@macro supa_device}
-  const SupaDevice({
-    required this.screenType,
-    required this.orientation,
-    required this.device,
-    required this.deviceOS,
-    required this.screenSize,
-  });
 
   ///Current Screen.
   ///If the device can change the screen size, like web, you should update this
