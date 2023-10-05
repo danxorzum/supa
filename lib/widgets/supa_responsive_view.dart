@@ -1,4 +1,4 @@
-part of 'supa_widgets.dart';
+part of 'widgets.dart';
 
 class SupaResponsiveView extends StatelessWidget {
   const SupaResponsiveView(
@@ -16,6 +16,7 @@ class SupaResponsiveView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log('Supa view rebuild');
     final screenDevice = AppController.help.screenDevice;
     switch (screenDevice) {
       case SupaDevice.watch:

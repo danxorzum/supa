@@ -1,6 +1,6 @@
 library supa;
 
-export 'package:supa/widgets/supa_widgets.dart';
+export 'package:supa/widgets/widgets.dart';
 export 'core/core.dart';
 
 //modules

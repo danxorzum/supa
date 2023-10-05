@@ -15,7 +15,9 @@ class AppController with ChangeNotifier {
     final size = WidgetsFlutterBinding.ensureInitialized().window.physicalSize;
     final ratio =
         WidgetsFlutterBinding.ensureInitialized().window.devicePixelRatio;
-    _supaHelp = SupaHelp(Size(size.width / ratio, size.height / ratio));
+    _supaHelp = SupaHelp(
+        settings: settings,
+        size: Size(size.width / ratio, size.height / ratio));
   }
 
   //Instance of the controller.
@@ -26,6 +28,11 @@ class AppController with ChangeNotifier {
 
   late SupaHelp _supaHelp;
 
+  //scaffold key
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  //navigation key
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
   final ValueNotifier<AppLifecycleState> _state =
       ValueNotifier<AppLifecycleState>(AppLifecycleState.resumed);
   final ValueNotifier<AppLifecycleState> _lastsState =
@@ -35,8 +42,18 @@ class AppController with ChangeNotifier {
 
   late SupaOrientation _currentOrientation;
 
+  SupaSettings settings = SupaSettings();
+
   //getters
   SupaHelp get supaHelp => _supaHelp;
+
+  BuildContext get context {
+    assert(
+        scaffoldKey.currentState != null || navigatorKey.currentState != null,
+        'You must use the appcontroller navigatorKey or scaffoldKey to get the context');
+    return navigatorKey.currentState?.context ??
+        scaffoldKey.currentState!.context;
+  }
 
   ///Get the currents [SupaOrientation]of the app.
   SupaOrientation get currentOrientation => _currentOrientation;
@@ -59,9 +76,10 @@ class AppController with ChangeNotifier {
 
   bool get areControllerInitialized => _areControllerInitialized;
 
-  void init(SupaOrientation orientation) {
+  void init(SupaOrientation orientation, {SupaSettings? settings}) {
     _currentOrientation = orientation;
     _areControllerInitialized = true;
+    if (settings != null) this.settings = settings;
   }
 
   ///if you are using [SupaAppExtension] you don't need to call this method.
@@ -72,7 +90,9 @@ class AppController with ChangeNotifier {
   void verifySizes(bool canNotifyListeners) {
     final size = WidgetsBinding.instance.window.physicalSize;
     final pRatio = WidgetsBinding.instance.window.devicePixelRatio;
-    _supaHelp = SupaHelp(Size(size.width / pRatio, size.height / pRatio));
+    _supaHelp = SupaHelp(
+        size: Size(size.width / pRatio, size.height / pRatio),
+        settings: settings);
     if (canNotifyListeners) notifyListeners();
   }
 

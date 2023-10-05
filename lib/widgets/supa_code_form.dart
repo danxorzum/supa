@@ -1,4 +1,4 @@
-part of 'supa_widgets.dart';
+part of 'widgets.dart';
 
 /// A [Form] that displays a [CodeField].
 /// It uses InputDecorationTheme.
@@ -171,7 +171,8 @@ class _SupaCodeFormState extends State<SupaCodeForm> {
         if (_error)
           Text(
             'Codigo de verificación incorrecto',
-            style: textTheme.bodyText2?.copyWith(color: theme.errorColor),
+            style:
+                textTheme.bodyMedium?.copyWith(color: theme.colorScheme.error),
           ),
       ],
     ));

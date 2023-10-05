@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -23,6 +25,7 @@ class SupaAppExtension extends StatefulWidget {
     this.materialTheme,
     this.notifyIfLifeCycleChanged = true,
     this.notifyIfScreenSizeChanged = true,
+    this.settings,
     super.key,
   });
 
@@ -36,6 +39,7 @@ class SupaAppExtension extends StatefulWidget {
   ///By default it is true.
   final bool notifyIfLifeCycleChanged;
   final bool notifyIfScreenSizeChanged;
+  final SupaSettings? settings;
 
   final SupaThemeData? themeData;
   final SupaThemeData? datkThemeData;
@@ -68,11 +72,13 @@ class _SupaAppExtensionState extends State<SupaAppExtension>
       DeviceOrientation.landscapeRight,
     ]);
     super.initState();
-    _appController.init(SupaOrientation(
-      portraitUp: true,
-      portraitDown: true,
-      landscape: true,
-    ));
+    _appController.init(
+        SupaOrientation(
+          portraitUp: true,
+          portraitDown: true,
+          landscape: true,
+        ),
+        settings: widget.settings);
     _themeData = widget.themeData ??
         (widget.materialTheme != null
             ? SupaThemeData.fromMaterial(widget.materialTheme!)
@@ -110,6 +116,7 @@ class _SupaAppExtensionState extends State<SupaAppExtension>
       child: AnimatedBuilder(
           animation: _appController,
           builder: (_, __) {
+            log('SupaAppExtension rebuilded');
             return SupaTheme(
               data: _themeData,
               child: Builder(

@@ -1,4 +1,4 @@
-part of 'supa_widgets.dart';
+part of 'widgets.dart';
 
 class SupaWidget extends StatelessWidget {
   const SupaWidget(
@@ -7,6 +7,9 @@ class SupaWidget extends StatelessWidget {
   final Widget cupertinoChild;
 
   @override
-  Widget build(BuildContext context) =>
-      Platform.isIOS || Platform.isMacOS ? cupertinoChild : materialChild;
+  Widget build(BuildContext context) => kIsWeb
+      ? materialChild
+      : Platform.isIOS || Platform.isMacOS
+          ? cupertinoChild
+          : materialChild;
 }

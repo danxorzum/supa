@@ -1,4 +1,4 @@
-part of 'supa_widgets.dart';
+part of 'widgets.dart';
 
 class SupaDebouncingField extends StatefulWidget {
   const SupaDebouncingField(

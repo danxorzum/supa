@@ -1,39 +1,49 @@
 part of 'export.dart';
 
 extension SupaContext on BuildContext {
-  Size get sSize => MediaQuery.of(this).size;
+  Size get size => MediaQuery.of(this).size;
 
-  double get sWidth => sSize.width;
-  double get sHeight => sSize.height;
+  double get width => size.width;
+  double get height => size.height;
 
   //SupaThemeData
   SupaThemeData get sTheme => SupaThemeData.of(this);
   //theme
   SupaTextTheme get sTextTheme => sTheme.textTheme;
+  ThemeData get theme => Theme.of(this);
   ColorScheme get colorS => Theme.of(this).colorScheme;
 
   ///Get your [SupaHelp] its fucking awesome.
   SupaHelp get help => AppController.help;
 
+  ///Get your [AppController].
+  AppController get controller => AppController.instance;
+
 //Screen size bools
-  bool get isW => ScreenSize.w.offset.isInRange(sWidth);
-  bool get isXs => ScreenSize.xs.offset.isInRange(sWidth);
-  bool get isS => ScreenSize.s.offset.isInRange(sWidth);
-  bool get isM => ScreenSize.m.offset.isInRange(sWidth);
-  bool get isL => ScreenSize.l.offset.isInRange(sWidth);
-  bool get isXl => ScreenSize.xl.offset.isInRange(sWidth);
+  bool get isW => ScreenSize.w.offset.isInRange(width);
+  bool get isXs => ScreenSize.xs.offset.isInRange(width);
+  bool get isS => ScreenSize.s.offset.isInRange(width);
+  bool get isM => ScreenSize.m.offset.isInRange(width);
+  bool get isL => ScreenSize.l.offset.isInRange(width);
+  bool get isXl => ScreenSize.xl.offset.isInRange(width);
 
-  bool get biggerThanXs => sWidth > ScreenSize.xs.offset.dx;
-  bool get biggerThanS => sWidth > ScreenSize.s.offset.dx;
-  bool get biggerThanM => sWidth > ScreenSize.m.offset.dx;
-  bool get biggerThanL => sWidth > ScreenSize.l.offset.dx;
-  bool get biggerThanXl => sWidth > ScreenSize.xl.offset.dx;
+  bool get biggerThanXs => width > ScreenSize.xs.offset.dx;
+  bool get biggerThanS => width > ScreenSize.s.offset.dx;
+  bool get biggerThanM => width > ScreenSize.m.offset.dx;
+  bool get biggerThanL => width > ScreenSize.l.offset.dx;
+  bool get biggerThanXl => width > ScreenSize.xl.offset.dx;
 
-  bool get smallerThanXs => sWidth < ScreenSize.xs.offset.dx;
-  bool get smallerThanS => sWidth < ScreenSize.s.offset.dx;
-  bool get smallerThanM => sWidth < ScreenSize.m.offset.dx;
-  bool get smallerThanL => sWidth < ScreenSize.l.offset.dx;
-  bool get smallerThanXl => sWidth < ScreenSize.xl.offset.dx;
+  bool get smallerThanXs => width < ScreenSize.xs.offset.dx;
+  bool get smallerThanS => width < ScreenSize.s.offset.dx;
+  bool get smallerThanM => width < ScreenSize.m.offset.dx;
+  bool get smallerThanL => width < ScreenSize.l.offset.dx;
+  bool get smallerThanXl => width < ScreenSize.xl.offset.dx;
+
+  bool get isIOS => Platform.isIOS;
+  bool get isAndroid => Platform.isAndroid;
+  bool get isWindows => Platform.isWindows;
+  bool get isMacOS => Platform.isMacOS;
+  bool get isLinux => Platform.isLinux;
 
   //Supa text styles
   TextStyle get display => sTextTheme.display;

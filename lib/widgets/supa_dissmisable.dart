@@ -1,4 +1,4 @@
-part of 'supa_widgets.dart';
+part of 'widgets.dart';
 
 class SupaDissmisable extends StatefulWidget {
   const SupaDissmisable({
@@ -52,18 +52,16 @@ class _SupaDissmisableState extends State<SupaDissmisable>
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 0.1),
           child: Container(
-            child: Container(
-              height: double.infinity,
-              color: colorS.error,
-              child: Row(
-                children: [
-                  const Spacer(),
-                  IconButton(
-                    icon: Icon(Icons.delete, color: colorS.onError),
-                    onPressed: () {},
-                  )
-                ],
-              ),
+            height: double.infinity,
+            color: colorS.error,
+            child: Row(
+              children: [
+                const Spacer(),
+                IconButton(
+                  icon: Icon(Icons.delete, color: colorS.onError),
+                  onPressed: () {},
+                )
+              ],
             ),
           ),
         ),

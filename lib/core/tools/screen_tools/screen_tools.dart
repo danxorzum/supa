@@ -82,7 +82,9 @@ enum SupaDevice {
   }
 
   static SupaDevice getDevice(Size size) {
-    if (Platform.isWindows || Platform.isMacOS || Platform.isLinux || kIsWeb) {
+    if (kIsWeb) {
+      return SupaDevice.desktop;
+    } else if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
       return SupaDevice.desktop;
     }
     if (size.smallerThan(SupaDevice.watch.maxSize)) return SupaDevice.watch;

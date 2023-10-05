@@ -7,12 +7,21 @@ class SupaHelp {
   ///
   /// Give your[size] and thast it.
   /// Obtain lot of tools for your app, like [Radius], [BorderRadius], [EdgeInsets], [SizedBox] etc.
-  SupaHelp(this.size) {
-    horizontalIns = SupaInsets.horizontal(size.width);
-    verticalIns = SupaInsets.vertical(size.width);
-    allIns = SupaInsets.all(size.width);
-    allInsSmall = SupaInsets.all(size.width, isSmall: true);
-    insValue = SupaInsets.getInsetValue(size.width);
+  SupaHelp({required this.settings, required this.size}) {
+    screenSize = ScreenSize.whatsSize(size.width);
+    ins = SupaInsets(
+        w: settings.wIns,
+        xs: settings.xsIns,
+        xl: settings.xlIns,
+        lg: settings.lgIns,
+        med: settings.medIns,
+        sm: settings.smIns,
+        screenSize: screenSize);
+    horizontalIns = ins.horizontal();
+    verticalIns = ins.vertical();
+    allIns = ins.all();
+    allInsSmall = ins.all(isSmall: true);
+    insValue = ins.getInsetValue();
     insValueLarge = insValue * 1.5;
     insValueSmall = insValue * 0.5;
     columnSpaceLarge = SizedBox(height: insValueLarge);
@@ -21,16 +30,24 @@ class SupaHelp {
     rowSpaceLarge = SizedBox(width: insValueLarge);
     rowSpace = SizedBox(width: insValue);
     rowSpaceSmall = SizedBox(width: insValueSmall);
-    corner = SupaCorners.getCorner(size.width);
-    radius = Radius.circular(corner);
-    borderRadius = BorderRadius.circular(corner);
-    screenSize = ScreenSize.whatsSize(size.width);
+    corner = SupaCorners(
+        lg: settings.lgCor,
+        med: settings.medCor,
+        sm: settings.smCor,
+        screenSize: screenSize);
+    radius = corner.getCircularRadius();
+    borderRadius = corner.getCircularBorderRadius();
     device = SupaDevice.getDevice(size);
     screenDevice = SupaDevice.getDeviceFromSize(size);
   }
 
   /// Your viewport size
   final Size size;
+
+  ///Your [SupaSettings] for your app.
+  final SupaSettings settings;
+
+  late final SupaInsets ins;
 
   /// Responsive [EdgeInsets.symmetric] using [horizontal].
   late final EdgeInsets horizontalIns;
@@ -72,7 +89,7 @@ class SupaHelp {
   late final SizedBox rowSpaceSmall;
 
   /// Responsive [double] for corners.
-  late final double corner;
+  late final SupaCorners corner;
 
   /// Responsive [Radius].
   late final Radius radius;
@@ -97,6 +114,5 @@ class SupaHelp {
           bool bottom = false,
           bool left = false,
           bool rigth = false}) =>
-      SupaInsets.only(size.width,
-          top: top, bottom: bottom, left: left, rigth: rigth);
+      ins.only(top: top, bottom: bottom, left: left, rigth: rigth);
 }

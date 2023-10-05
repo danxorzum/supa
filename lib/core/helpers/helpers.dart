@@ -1,6 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import '../tools/screen_tools/screen_tools.dart';
+import 'settings.dart';
+export 'settings.dart';
 
 part 'insets.dart';
 part 'corners.dart';

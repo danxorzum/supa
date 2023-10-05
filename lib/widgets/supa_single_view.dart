@@ -1,4 +1,4 @@
-part of 'supa_widgets.dart';
+part of 'widgets.dart';
 
 class SupaSingleView extends StatefulWidget {
   const SupaSingleView({

@@ -1,4 +1,4 @@
-part of 'supa_widgets.dart';
+part of 'widgets.dart';
 
 class SupaLayout extends StatelessWidget {
   const SupaLayout(
@@ -8,7 +8,8 @@ class SupaLayout extends StatelessWidget {
       this.background,
       this.drawer,
       this.navigationRail,
-      this.bottomNavigationBar});
+      this.bottomNavigationBar,
+      this.floatingActionButton});
 
   final AppBar? appBar;
   final Widget? background;
@@ -16,12 +17,15 @@ class SupaLayout extends StatelessWidget {
   final Drawer? drawer;
   final NavigationRail? navigationRail;
   final BottomNavigationBar? bottomNavigationBar;
+  final Widget? floatingActionButton;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        // key: AppController.instance.scaffoldKey,
         appBar: appBar,
         bottomNavigationBar: navigationRail ?? bottomNavigationBar,
+        floatingActionButton: floatingActionButton,
         drawer: drawer,
         body: Stack(
           children: [
